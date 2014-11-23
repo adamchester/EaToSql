@@ -26,10 +26,8 @@ Example
 This example demonstrates using a function defined in this sample library.
 
 *)
-#r "FSharp.ProjectTemplate.dll"
-open FSharp.ProjectTemplate
-
-printfn "hello = %i" <| Library.hello 0
+#r "EaToSql.dll"
+open EaToSql
 
 (**
 Some more info

@@ -1,20 +1,9 @@
-(*** hide ***)
-// This block of code is omitted in the generated HTML documentation. Use 
-// it to define helpers that you do not want to show in the documentation.
-#I "../../bin"
+﻿module EaToSql.Tests.ApiTests
 
-(**
-EA to SQL
-=========
-
-This utility converts an Enterprise Architect (EA) XMI data model export
-into a SQL create script for SQL Server.
-
-*)
-#r "EaToSql.dll"
 open EaToSql
+open NUnit.Framework
 
-let tables = [
+let expectedTables = [
     { Name = "person"
       Columns = [ { Name = "id"; DataType = IntAuto; AllowsNull = false }
                   { Name = "first"; DataType = SQLT "varchar(100)"; AllowsNull = false }
@@ -36,6 +25,9 @@ let tables = [
       Relationships = [] }
 ]
 
-(**
-Some more info
-*)
+[<Test; Ignore>]
+let ``generate the correct model from samples`` () =
+    let sampleXmlFile = @"Samples\SampleModel_xmi2_1.xml"
+    use xml = new System.IO.StreamReader(sampleXmlFile)
+    let actual = readTablesFromXmi (xml) |> Seq.toArray
+    Assert.AreEqual(expectedTables, actual)
