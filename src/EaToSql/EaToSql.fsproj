@@ -64,6 +64,7 @@
     </Content>
     <Compile Include="Utils.fs" />
     <Compile Include="Reader.fs" />
+    <Compile Include="SqlGen.fs" />
     <Compile Include="Api.fs" />
   </ItemGroup>
   <ItemGroup>

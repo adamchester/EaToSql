@@ -25,9 +25,9 @@ let expectedTables = [
       Relationships = [] }
 ]
 
-[<Test; Ignore>]
+[<Test>]
 let ``generate the correct model from samples`` () =
-    let sampleXmlFile = @"Samples\SampleModel_xmi2_1.xml"
+    let sampleXmlFile = @"SampleModel_xmi2_1.xml"
     use xml = new System.IO.StreamReader(sampleXmlFile)
-    let actual = readTablesFromXmi (xml) |> Seq.toArray
+    let actual = Api.readTablesFromXmi (xml) |> Seq.toArray
     Assert.AreEqual(expectedTables, actual)

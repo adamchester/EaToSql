@@ -17,21 +17,21 @@ module DataModelCreateTests =
 
     [<Test>]
     let ``ignore length, scale, and prec when creating int`` () =
-        let actual = DataType.Create("InT", isAutoNum=false, length=Some "1", decimalScale=Some "2", decimalPrec=Some "3")
+        let actual = DataType.Create("InT", isAutoNum=false, length=Some 1, decimalScale=Some 2, decimalPrec=Some 3)
         Assert.AreEqual(Int, actual)
 
     [<Test>]
-    let ``use length, scale, and prec when creating dEcImAl`` () =
-        let actual = DataType.Create("dEcImAl", isAutoNum=false, length=Some "42", decimalScale=Some "38", decimalPrec=Some "98")
+    let ``use only scale and prec when creating dEcImAl`` () =
+        let actual = DataType.Create("dEcImAl", isAutoNum=true, length=Some 42, decimalPrec=Some 98, decimalScale=Some 38)
         Assert.AreEqual(Decimal(98, 38), actual)
 
-        let actual = DataType.Create("dEcImAl", isAutoNum=false, length=Some "99", decimalScale=Some "74", decimalPrec=Some "01029")
+        let actual = DataType.Create("dEcImAl", isAutoNum=true, length=Some 99, decimalPrec=Some 01029, decimalScale=Some 74)
         Assert.AreEqual(Decimal(1029, 74), actual)
 
     [<Test>]
-    let ``use the lowercase name if the type is not a special named one`` () =
-        let actual = DataType.Create("anythingGoes", isAutoNum=false, length=None, decimalScale=None, decimalPrec=None)
+    let ``convert to lowercase name if the type is not a special named one`` () =
+        let actual = DataType.Create("anythingGoes", isAutoNum=true, length=None, decimalScale=None, decimalPrec=None)
         Assert.AreEqual(SQLT("anythinggoes"), actual)
 
-        let actual = DataType.Create("itWiLlBeConvertedToLowerCase", isAutoNum=false, length=None, decimalScale=None, decimalPrec=None)
+        let actual = DataType.Create("itWiLlBeConvertedToLowerCase", isAutoNum=true, length=None, decimalScale=None, decimalPrec=None)
         Assert.AreEqual(SQLT("itwillbeconvertedtolowercase"), actual)
