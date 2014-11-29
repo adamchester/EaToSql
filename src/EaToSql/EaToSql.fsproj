@@ -60,7 +60,7 @@
     <Compile Include="Model.fs" />
     <Compile Include="Api.fsi" />
     <Content Include="SampleModel_xmi2_1.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Utils.fs" />
     <Compile Include="Reader.fs" />

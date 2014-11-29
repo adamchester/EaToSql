@@ -38,8 +38,13 @@ module Model =
     type NamedColumnRefs = { Name: ModelName; Columns: ColumnRef list }
         with override x.ToString() = sprintf "%A" x
 
+    type PrimaryKey = NamedColumnRefs
+    type Index = NamedColumnRefs
+    type Unique = NamedColumnRefs
+    type RelTarget = NamedColumnRefs
+
     /// A named database relationship with source and destination column names.
-    type Relationship = { Name:ModelName; Source:NamedColumnRefs; Target:NamedColumnRefs }
+    type Relationship = { Name: ModelName; SourceCols: ColumnRef list; Target: RelTarget}
         with override x.ToString() = sprintf "%A" x
 
     /// Describes a table column including the data type
@@ -52,8 +57,18 @@ module Model =
     /// Describes a table, including columns, PKs, IXs, FKs
     type Table = {
         Name: ModelName
-        PrimaryKey: NamedColumnRefs
+        PrimaryKey: PrimaryKey
         Columns: ColumnDef list
-        Indexes: NamedColumnRefs list
-        Relationships: Relationship list }
+        Indexes: Index list
+        Relationships: Relationship list
+        Uniques: Unique list }
         with override x.ToString() = sprintf "%A" x
+
+[<AutoOpen>]
+module Dsl =
+    let col name dtype : ColumnDef = { Name = name; DataType = dtype; AllowsNull = false; }
+    let pk name cols : PrimaryKey = { Name = name; Columns = cols; }
+    let ix name cols : Index = { Name = name; Columns = cols; }
+    let uq name cols : Unique = { Name = name; Columns = cols; }
+    let target name cols : RelTarget = { Name = name; Columns = cols; }
+    let rel name srcCols target : Relationship = { Name = name; SourceCols = srcCols; Target = target; }

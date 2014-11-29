@@ -7,11 +7,11 @@ let getOrFail failFormat (dict: System.Collections.Generic.IDictionary<'key, 'va
     if not exists then failwithf failFormat id
     elem
 
-/// Generates comma-separated values from a sequence of strings
-let csv (strings:string seq) = System.String.Join(",\n\t", strings|>Seq.toArray)
-
 /// Joins a sequence of strings into a a single string using the provided separator.
-let stringJoin separator (strings: string seq) = System.String.Join(separator, strings|>Seq.toArray)
+let stringJoin separator (strings: string seq) = System.String.Join(separator, strings |> Seq.toArray)
+
+/// Generates comma-separated values from a sequence of strings
+let csv (strings:string seq) = stringJoin (","+System.Environment.NewLine) strings
 
 /// Joins a sequence of strings using new line characters.
 let joinNewLines strings = stringJoin System.Environment.NewLine strings

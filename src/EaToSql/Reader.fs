@@ -90,7 +90,7 @@ let asocToRelationship  (oopGetter: OwnedOpNamedColumnsRefGetter)
     let fkName = asocPkgElems.Association.OwnedEnd.Value.Name
     let sourceOperation = table.Operations.Value.Operations |> Array.filter (fun op -> op.Name = fkName) |> Seq.exactlyOne
     { Relationship.Name = fkName
-      Source = oopGetter sourceOperation
+      SourceCols = (oopGetter sourceOperation).Columns
       Target = { NamedColumnRefs.Name = asocPkgElems.End.Name
                  Columns = [] } } // TODO: columns
 
@@ -99,6 +99,7 @@ let classElementToTable linkAsocGetter oopGetter (e: EaUml.Element) : Table =
       Columns = (e.Attributes.Value.Attributes |> Array.map attrToColumnDef |> Seq.toList)
       PrimaryKey = (tableOpsForStereotype "PK" oopGetter e) |> Seq.exactlyOne
       Indexes = (tableOpsForStereotype "index" oopGetter e) |> Seq.toList
+      Uniques = (tableOpsForStereotype "unique" oopGetter e) |> Seq.toList
       Relationships = if e.Links.IsNone then []
                       else e.Links.Value.Associations
                             |> Seq.filter (fun a -> a.Start = e.Idref.Value)

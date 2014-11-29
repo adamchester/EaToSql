@@ -36,14 +36,14 @@ let getCreateTableAndIdxSql (t:Table) =
             t.Name (columnsDefsToCsv t.Columns) t.PrimaryKey.Name (columnRefsCsv t.PrimaryKey.Columns) createIdxSql
 
 let getCreateFkSql (t: Table) (rel: Relationship) =
-    sprintf "ALTER TABLE [%s] ADD CONSTRAINT [%s]\nFOREIGN KEY (%s) REFERENCES [%s] (%s)"
-            (t.Name) rel.Name (columnRefsCsv rel.Source.Columns) rel.Target.Name (columnRefsCsv rel.Target.Columns)
+    sprintf "ALTER TABLE [%s] ADD CONSTRAINT [%s] FOREIGN KEY (%s) REFERENCES [%s] (%s)"
+            (t.Name) rel.Name (columnRefsCsv rel.SourceCols) rel.Target.Name (columnRefsCsv rel.Target.Columns)
 
 let getCreateFksSql (t: Table) =
     t.Relationships
     |> groupByTakeFlatten (fun rel -> rel.Name) 1 // TODO: why dups?! for now, only take the first of each relationship name
     |> Seq.map (getCreateFkSql t)
-    |> Array.ofSeq
+    |> Seq.toArray
     |> joinNewLines
 
 

@@ -4,8 +4,8 @@
 #I "../../bin"
 
 (**
-F# Project Scaffold
-===================
+EA to SQL
+=========
 
 Documentation
 
@@ -13,8 +13,7 @@ Documentation
   <div class="span1"></div>
   <div class="span6">
     <div class="well well-small" id="nuget">
-      The F# ProjectTemplate library can be <a href="https://nuget.org/packages/FSharp.ProjectTemplate">installed from NuGet</a>:
-      <pre>PM> Install-Package FSharp.ProjectTemplate</pre>
+      This project has no decent doco.
     </div>
   </div>
   <div class="span1"></div>
@@ -24,10 +23,26 @@ Example
 -------
 
 This example demonstrates using a function defined in this sample library.
-
 *)
 #r "EaToSql.dll"
 open EaToSql
+
+let generatedSql =
+    generateSqlFromModel
+        [ { Table.Name = "t1"
+            Columns = [ { ColumnDef.Name = "id"; DataType = Int; AllowsNull = false; } ]
+            PrimaryKey = { Name="t1_pk"; Columns = ["id"] }
+            Indexes = [ { Name="t1_ix"; Columns = ["id"] } ]
+            Relationships = [] }
+        ]
+    |> Seq.toArray
+
+let expectedCreateTableSql = "CREATE TABLE [t1] (
+	id int NOT NULL
+CONSTRAINT [t1_pk] PRIMARY KEY CLUSTERED (id))
+CREATE INDEX [t1_ix] ON [t1] (id)"
+
+assert (expectedCreateTableSql = generatedSql.[0])
 
 (**
 Some more info
