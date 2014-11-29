@@ -18,7 +18,8 @@ let expectedSampleModelXmi2_1 = [
                           {(col "contract_pdf" (SQLT "varbinary(max)")) with AllowsNull = true}]
                PrimaryKey = pk "PK_person_salary" ["person_salary_id"]
                Indexes = [ix "IXFK_person_salary_person" ["person_id"]]
-               Relationships = [rel "FK_person_salary_person" ["person_id"] (target "person" ["person_id"])] }
+               Relationships = [rel "FK_person_salary_person" ["person_id"] (target "person" ["person_id"])]
+               Uniques = [uq "UQ_person_salary_person_id" ["person_id"; "salary_amt"]] }
     { tbl with Name = "person_skill"
                Columns = [col "person_skill_id" IntAuto; col "person_id" Int; col "skill_type_id" Int]
                PrimaryKey = pk "PK_person_skill" ["person_skill_id"]
@@ -29,8 +30,8 @@ let expectedSampleModelXmi2_1 = [
                Columns = [col "person_id" Int; col "tag_type_id" Int]
                PrimaryKey = pk "PK_person_tag" ["person_id";"tag_type_id"]
                Indexes = [ix "IXFK_person_tag_person" ["person_id"]; ix "IXFK_person_tag_tag_type" ["tag_type_id"]]
-               Relationships = [rel "FK_person_tag_person" ["person_id"] (target "person" ["person_id"])
-                                rel "FK_person_tag_tag_type" ["tag_type_id"] (target "ref_tag_type" ["tag_type_id"])] }
+               Relationships = [rel "FK_person_tag_tag_type" ["tag_type_id"] (target "tag_type" ["tag_type_id"])
+                                rel "FK_person_tag_person" ["person_id"] (target "person" ["person_id"]) ] }
     { tbl with Name = "ref_skill_type"
                Columns = [col "skill_type_id" IntAuto; col "skill_type_nme" (VarChar 100)]
                PrimaryKey = pk "PK_ref_skill_type" ["skill_type_id"]
@@ -41,16 +42,19 @@ let expectedSampleModelXmi2_1 = [
                Uniques = [uq "UQ_tag_type_tag_type_nme" ["tag_type_nme"]] }
 ]
 
-[<Test; Ignore>]
+[<Test>]
 let ``generate the correct model from samples`` () =
     let sampleXmlFile = @"SampleModel_xmi2_1.xml"
     use xml = new System.IO.StreamReader(sampleXmlFile)
     let actual = readTablesFromXmi (xml) |> Seq.toList
+    Assert.AreEqual((sprintf "%A" expectedSampleModelXmi2_1), (sprintf "%A" actual))
 
+    (* Verify by using the SQL - produces a more easily readable output
     let expectedSql = Seq.toList (generateSqlFromModel expectedSampleModelXmi2_1)
     let actualSql = Seq.toList (generateSqlFromModel actual)
-
+    printfn "EXPECTED: %A\nACTUAL: %A" expectedSql actualSql
     Assert.AreEqual(expectedSql, actualSql)
+    *)
 
 [<Test>]
 let ``generate the correct SQL from samples`` () =

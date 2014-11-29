@@ -326,15 +326,15 @@
 			<element xmi:idref="EAPK_23441C2C_BB8B_4429_BCFF_4873BDE40DDD" xmi:type="uml:Package" name="Data Model" scope="public">
 				<model package2="EAID_23441C2C_BB8B_4429_BCFF_4873BDE40DDD" package="EAPK_DA790DD6_91F8_4fb6_B47F_ABC18EF84691" tpos="2" ea_localid="3" ea_eleType="package"/>
 				<properties isSpecification="false" sType="Package" nType="0" scope="public"/>
-				<project version="1.0" phase="1.0" created="2006-01-17 17:02:51" modified="2014-11-12 20:19:08" complexity="1" status="Proposed"/>
-				<code gentype="&lt;none&gt;" genfile="C:\My\repo\ntioms\Main\Source\Database\EaToSql\EaSamples\Data Model.sql"/>
+				<project version="1.0" phase="1.0" created="2006-01-17 17:02:51" modified="2014-11-30 07:19:59" complexity="1" status="Proposed"/>
+				<code gentype="&lt;none&gt;"/>
 				<style appearance="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
 				<tags/>
 				<xrefs/>
 				<extendedProperties tagged="0" package_name="Model"/>
 				<packageproperties version="1.0" owner="Geoffrey Sparks" xmiver="Enterprise Architect XMI/UML 1.3" tpos="2"/>
 				<paths/>
-				<times created="2014-11-08 19:37:52" modified="2014-11-12 20:19:08" lastloaddate="2014-11-09 11:40:33" lastsavedate="2014-11-08 19:37:52"/>
+				<times created="2014-11-08 19:37:52" modified="2014-11-30 07:19:59" lastloaddate="2014-11-09 11:40:33" lastsavedate="2014-11-08 19:37:52"/>
 				<flags iscontrolled="FALSE" isprotected="FALSE" batchsave="0" batchload="0" usedtd="FALSE" logxml="FALSE" packageFlags="isModel=1;VICON=3;AN=0;gen=1;"/>
 			</element>
 			<element xmi:idref="EAID_CD5AB753_44D2_411a_A6FD_4F8A676A19D7" xmi:type="uml:Class" name="person" scope="public">
@@ -1549,7 +1549,7 @@
 				<documentation/>
 				<appearance linemode="3" linecolor="-1" linewidth="0" seqno="0" headStyle="0" lineStyle="0"/>
 				<labels lb="0..*" lt="+FK_person_tag_person" mb=" &#xA;«FK»" mt="(person_id = person_id)" rb="1" rt="+PK_Person"/>
-				<extendedProperties virtualInheritance="0"/>
+				<extendedProperties conditional=" &#xA;«FK»" virtualInheritance="0"/>
 				<style value="FKINFO=SRC=FK_person_tag_person:DST=PK_Person:;"/>
 				<xrefs value="$XREFPROP=$XID={B61DE1CE-61D3-4d6f-B39D-5CD47D59ABD3}$XID;$NAM=Stereotypes$NAM;$TYP=connector property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=FK;GUID={E70A7944-E00D-4b31-A717-E255AC64786B};FQName=EAUML::FK;@ENDSTEREO;$DES;$CLT={78CC37A3-5729-489e-A2B8-9168CC77C459}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 				<tags/>
@@ -2206,19 +2206,19 @@
 			<diagram xmi:id="EAID_BBD92AAE_093C_410b_B9C3_434D8CF6B5C5">
 				<model package="EAPK_23441C2C_BB8B_4429_BCFF_4873BDE40DDD" localID="68" owner="EAPK_23441C2C_BB8B_4429_BCFF_4873BDE40DDD"/>
 				<properties name="Persons" type="Logical"/>
-				<project author="adam" version="1.0" created="2014-11-09 08:25:26" modified="2014-11-29 10:28:36"/>
+				<project author="adam" version="1.0" created="2014-11-09 08:25:26" modified="2014-11-30 07:19:51"/>
 				<style1 value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=2;PPgs.cy=1;DocSize.cx=826;DocSize.cy=1169;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=Information Engineering;ExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;ShowNotes=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
-				<style2 value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLocked=0;TConnectorNotation=Information Engineering;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;ProfileData=;MDGDgm=Extended::Data Modeling;STBLDgm=;ShowNotes=1;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;SaveTag=0A96DDF5;"/>
+				<style2 value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLocked=0;TConnectorNotation=Information Engineering;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;ProfileData=;MDGDgm=Extended::Data Modeling;STBLDgm=;ShowNotes=1;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;SaveTag=925C9E2F;"/>
 				<swimlanes value="locked=false;orientation=0;width=0;inbar=false;names=false;color=-1;bold=false;fcol=0;tcol=-1;ofCol=-1;hl=1;cls=0;"/>
 				<matrixitems value="locked=false;matrixactive=false;swimlanesactive=true;kanbanactive=false;width=1;"/>
 				<extendedProperties/>
 				<elements>
 					<element geometry="Left=404;Top=239;Right=583;Bottom=442;" subject="EAID_36DFC1C2_648A_41cc_B6F6_A0C619D78F67" seqno="1" style="DUID=1B144FCC;HideIcon=0;"/>
 					<element geometry="Left=492;Top=592;Right=701;Bottom=739;" subject="EAID_85EB1C02_D312_458e_817E_3C6881F82C6D" seqno="2" style="DUID=1E4E2FF0;HideIcon=0;"/>
-					<element geometry="Left=78;Top=457;Right=310;Bottom=703;" subject="EAID_A3785D9D_D896_44ea_BA11_CE4D125FABBF" seqno="3" style="DUID=A711A292;HideIcon=0;"/>
+					<element geometry="Left=69;Top=460;Right=301;Bottom=706;" subject="EAID_A3785D9D_D896_44ea_BA11_CE4D125FABBF" seqno="3" style="DUID=A711A292;HideIcon=0;"/>
 					<element geometry="Left=749;Top=485;Right=980;Bottom=632;" subject="EAID_3F7ED1FA_E576_40c1_8AC5_86BFA95D7B45" seqno="4" style="DUID=0DF604A3;HideIcon=0;"/>
 					<element geometry="Left=650;Top=17;Right=887;Bottom=259;" subject="EAID_8F2F432B_3887_47c0_8EAC_53B5D6AA3CAB" seqno="5" style="DUID=3B89BE4E;HideIcon=0;"/>
-					<element geometry="Left=38;Top=23;Right=240;Bottom=243;" subject="EAID_CD5AB753_44D2_411a_A6FD_4F8A676A19D7" seqno="6" style="DUID=060A333C;HideIcon=0;"/>
+					<element geometry="Left=31;Top=19;Right=233;Bottom=239;" subject="EAID_CD5AB753_44D2_411a_A6FD_4F8A676A19D7" seqno="6" style="DUID=060A333C;HideIcon=0;"/>
 					<element geometry="SX=0;SY=0;EX=0;EY=0;EDGE=4;$LLB=CX=122:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LLT=CX=116:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LMT=CX=110:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LMB=CX=25:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRT=CX=58:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRB=CX=122:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;IRHS=;ILHS=;Path=;" subject="EAID_BD950BAA_95CC_4bfa_8CC9_A1CF59ACA977" style="Mode=3;EOID=060A333C;SOID=3B89BE4E;Color=-1;LWidth=0;Hidden=0;"/>
 					<element geometry="SX=0;SY=0;EX=0;EY=0;EDGE=3;$LLB=CX=169:CY=16:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LLT=CX=124:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LMT=CX=62:CY=39:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LMB=CX=25:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRT=CX=67:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRB=CX=169:CY=16:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;IRHS=;ILHS=;Path=;" subject="EAID_2484AA2A_6627_4f96_892E_83FE15BB2E0E" style="Mode=3;EOID=1E4E2FF0;SOID=1B144FCC;Color=-1;LWidth=0;Hidden=0;"/>
 					<element geometry="SX=0;SY=0;EX=0;EY=0;EDGE=4;$LLB=CX=169:CY=16:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LLT=CX=114:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LMT=CX=52:CY=39:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LMB=CX=25:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRT=CX=58:CY=13:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRB=CX=169:CY=16:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;IRHS=;ILHS=;Path=;" subject="EAID_78CC37A3_5729_489e_A2B8_9168CC77C459" style="Mode=3;EOID=060A333C;SOID=1B144FCC;Color=-1;LWidth=0;Hidden=0;"/>

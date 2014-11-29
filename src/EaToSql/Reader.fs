@@ -89,10 +89,16 @@ let asocToRelationship  (oopGetter: OwnedOpNamedColumnsRefGetter)
     let asocPkgElems = asocLocator asoc
     let fkName = asocPkgElems.Association.OwnedEnd.Value.Name
     let sourceOperation = table.Operations.Value.Operations |> Array.filter (fun op -> op.Name = fkName) |> Seq.exactlyOne
+
+    let memberEndDst = asocPkgElems.Association.MemberEnds |> Seq.find (fun me -> me.Idref.StartsWith("EAID_dst"))
+    let targetOwnedAttr = asocPkgElems.Start.OwnedAttributes |> Seq.find (fun oa -> oa.Id = memberEndDst.Idref)
+    let targetName = targetOwnedAttr.Name
+    let targetOwnedOp = asocPkgElems.End.OwnedOperations |> Seq.find (fun oop -> oop.Name = targetName)
+
     { Relationship.Name = fkName
       SourceCols = (oopGetter sourceOperation).Columns
       Target = { NamedColumnRefs.Name = asocPkgElems.End.Name
-                 Columns = [] } } // TODO: columns
+                 Columns = (targetOwnedOp.OwnedParameters |> Seq.map (fun op -> op.Name) |> Seq.toList) } }
 
 let classElementToTable linkAsocGetter oopGetter (e: EaUml.Element) : Table =
     { Table.Name = e.Name.Value
