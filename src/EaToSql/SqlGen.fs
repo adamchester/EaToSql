@@ -32,7 +32,9 @@ let getCreateTableAndIdxSql (t:Table) =
         t.Indexes |> List.filter (fun idx -> idx.Columns.Length > 0) |> List.map (getCreateTableIdxSql t) |> Seq.toArray
 
     let createIdxSql = joinNewLines createIdxSqlLines
-    sprintf "CREATE TABLE [%s] (\n\t%s\nCONSTRAINT [%s] PRIMARY KEY CLUSTERED (%s))\n%s"
+    sprintf "CREATE TABLE [%s] (%s
+  CONSTRAINT [%s] PRIMARY KEY CLUSTERED (%s))
+  %s"
             t.Name (columnsDefsToCsv t.Columns) t.PrimaryKey.Name (columnRefsCsv t.PrimaryKey.Columns) createIdxSql
 
 let getCreateFkSql (t: Table) (rel: Relationship) =

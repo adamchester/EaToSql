@@ -11,10 +11,10 @@ let getOrFail failFormat (dict: System.Collections.Generic.IDictionary<'key, 'va
 let stringJoin separator (strings: string seq) = System.String.Join(separator, strings |> Seq.toArray)
 
 /// Generates comma-separated values from a sequence of strings
-let csv (strings:string seq) = stringJoin (","+System.Environment.NewLine) strings
+let csv (strings:string seq) = stringJoin ", " strings
 
 /// Joins a sequence of strings using new line characters.
-let joinNewLines strings = stringJoin System.Environment.NewLine strings
+let joinNewLines strings = stringJoin "\n" strings
 
 /// Group a sequence by a custom projection, then take a number from each group,
 /// then flatten the results into a new sequence.

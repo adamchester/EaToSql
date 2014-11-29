@@ -77,20 +77,22 @@ let ``generate the correct SQL from samples`` () =
             ]
         |> Seq.toList
 
-    // TODO: fix inconsitent newlines and output strings etc ?
-    // For now, each table+indexes is a single string, each set of FKs per table is a single string
+    // For now, each (table+indexes) is a single string, each set of FKs (per table) is a single string
     let expectedSqlStatements = [
         // Expect two strings as output for now
-        "CREATE TABLE [t1] (\n\tid int NOT NULL\nCONSTRAINT [t1_pk] PRIMARY KEY CLUSTERED (id))\n"+
-         "CREATE INDEX [t1_ix] ON [t1] (id)"
-        "CREATE TABLE [t2] (\n\twhatever1 nvarchar(999) NULL,\r\nwhatever2 decimal(99, 99) NULL\nCONSTRAINT [pkt2] PRIMARY KEY CLUSTERED (whatever1,\r\nwhatever2))\n"+
-         "CREATE INDEX [ixt2] ON [t2] (whatever1,\r\nwhatever2)"
-        
-        "ALTER TABLE [t1] ADD CONSTRAINT [r1] FOREIGN KEY (id) REFERENCES [t2] (??)\r\n"+
-         "ALTER TABLE [t1] ADD CONSTRAINT [r2] FOREIGN KEY (anysrccol?) REFERENCES [anytarget?] (??,\r\nyep)"
+        "CREATE TABLE [t1] (id int NOT NULL
+  CONSTRAINT [t1_pk] PRIMARY KEY CLUSTERED (id))
+  CREATE INDEX [t1_ix] ON [t1] (id)"
 
-        "ALTER TABLE [t2] ADD CONSTRAINT [t2r1] FOREIGN KEY (id) REFERENCES [t2] (??)\r\n"+
-         "ALTER TABLE [t2] ADD CONSTRAINT [t2r2] FOREIGN KEY (anysrccol?) REFERENCES [anytarget?] (??,\r\nyep)"
+        "CREATE TABLE [t2] (whatever1 nvarchar(999) NULL, whatever2 decimal(99, 99) NULL
+  CONSTRAINT [pkt2] PRIMARY KEY CLUSTERED (whatever1, whatever2))
+  CREATE INDEX [ixt2] ON [t2] (whatever1, whatever2)"
+        
+        "ALTER TABLE [t1] ADD CONSTRAINT [r1] FOREIGN KEY (id) REFERENCES [t2] (??)
+ALTER TABLE [t1] ADD CONSTRAINT [r2] FOREIGN KEY (anysrccol?) REFERENCES [anytarget?] (??, yep)"
+
+        "ALTER TABLE [t2] ADD CONSTRAINT [t2r1] FOREIGN KEY (id) REFERENCES [t2] (??)
+ALTER TABLE [t2] ADD CONSTRAINT [t2r2] FOREIGN KEY (anysrccol?) REFERENCES [anytarget?] (??, yep)"
     ]
 
     Assert.AreEqual(expectedSqlStatements, actualSqlStatements)
