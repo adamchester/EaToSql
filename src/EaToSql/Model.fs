@@ -1,7 +1,9 @@
 namespace EaToSql
 
 [<AutoOpen>]
-module Model = 
+module Model =
+    let inline internal printObjectStructure x = sprintf "%A" x
+     
     /// The name of a data model object (e.g. Table, Column, Index,  etc).
     type ModelName = string
 
@@ -22,37 +24,51 @@ module Model =
         | NVarChar of length:int
         | SQLT of name:SqlDataTypeName
         with
-            override x.ToString() = sprintf "%A" x
+            override x.ToString() = printObjectStructure x
             /// Allows creating a data type from the all the supported components.
             static member Create (name:SqlDataTypeName, isAutoNum: bool, length: int option, decimalPrec: int option, decimalScale: int option) =
                 if name = null then nullArg "name"
-                match name.ToLowerInvariant() with
+                let lowerName = name.ToLowerInvariant()
+                match lowerName with
                 | "int" -> if isAutoNum = true then IntAuto else Int
                 | "decimal" -> Decimal(decimalPrec.Value, decimalScale.Value)
                 | "char" -> Char(length.Value)
                 | "varchar" -> VarChar(length.Value)
                 | "nvarchar" -> NVarChar(length.Value)
-                | _ -> SQLT(name.ToLowerInvariant())
+                | _ -> SQLT(lowerName)
 
-    /// A named object that references one or more column names (e.g. a named table index).
-    type NamedColumnRefs = { Name: ModelName; Columns: ColumnRef list }
-        with override x.ToString() = sprintf "%A" x
+    type AutoNameStrategy =
+        /// [prefix]_[table_name]_[first_col]... e.g. ix_table_name_first_col_second_col
+        | PrefixedTableNameColNames
+        with override x.ToString() = printObjectStructure x
 
+    type ModelNameOrAutoStrategy =
+        | Named of ModelName
+        | Auto of AutoNameStrategy
+        with override x.ToString() = printObjectStructure x
+
+    /// A named object that references one or more column names (e.g. a named table index or named PKey).
+    type NamedColumnRefs = { Name: ModelNameOrAutoStrategy; Columns: ColumnRef list }
+        with override x.ToString() = printObjectStructure x
+    
     type PrimaryKey = NamedColumnRefs
     type Index = NamedColumnRefs
     type Unique = NamedColumnRefs
-    type RelTarget = NamedColumnRefs
+    
+    /// The target table name and column(s) of a table relationship.
+    type RelTarget = { TableName: ModelName; Columns: ColumnRef list }
+        with override x.ToString() = printObjectStructure x
 
     /// A named database relationship with source and destination column names.
-    type Relationship = { Name: ModelName; SourceCols: ColumnRef list; Target: RelTarget}
-        with override x.ToString() = sprintf "%A" x
+    type Relationship = { Name: ModelNameOrAutoStrategy; SourceCols: ColumnRef list; Target: RelTarget }
+        with override x.ToString() = printObjectStructure x
 
     /// Describes a table column including the data type
     type ColumnDef = {
         Name: ModelName
-        AllowsNull: bool
+        Nullable: bool
         DataType: DataType }
-        with override x.ToString() = sprintf "%A" x
+        with override x.ToString() = printObjectStructure x
 
     /// Describes a table, including columns, PKs, IXs, FKs
     type Table = {
@@ -62,13 +78,23 @@ module Model =
         Indexes: Index list
         Relationships: Relationship list
         Uniques: Unique list }
-        with override x.ToString() = sprintf "%A" x
+        with override x.ToString() = printObjectStructure x
 
 [<AutoOpen>]
 module Dsl =
-    let col name dtype : ColumnDef = { Name = name; DataType = dtype; AllowsNull = false; }
-    let pk name cols : PrimaryKey = { Name = name; Columns = cols; }
-    let ix name cols : Index = { Name = name; Columns = cols; }
-    let uq name cols : Unique = { Name = name; Columns = cols; }
-    let target name cols : RelTarget = { Name = name; Columns = cols; }
-    let rel name srcCols target : Relationship = { Name = name; SourceCols = srcCols; Target = target; }
+    let col name dtype : ColumnDef = { Name = name; DataType = dtype; Nullable = false; }
+    
+    // AutoNamed
+    let private auto = Auto(PrefixedTableNameColNames)
+    let pk cols : PrimaryKey = { PrimaryKey.Name=auto; Columns=cols }
+    let ix cols : Index = { Index.Name=auto; Columns=cols }
+    let uq cols : Unique = { Unique.Name=auto; Columns=cols }
+    let rel srcCols target : Relationship = { Relationship.Name=auto; SourceCols=srcCols; Target=target }
+
+    // Named
+    let pkn name cols : PrimaryKey = { Name=Named(name); Columns = cols }
+    let ixn name cols : Index = { Name=Named(name); Columns = cols }
+    let uqn name cols : Unique = { Name=Named(name); Columns = cols }
+    let reln name srcCols target : Relationship = { Name=Named(name); SourceCols = srcCols; Target = target }
+
+    let target tname cols : RelTarget = { TableName = tname; Columns = cols; }

@@ -3,52 +3,85 @@
 open EaToSql
 open NUnit.Framework
 
-/// An empty table to use as a template
-let tbl = { Table.Name = ""; Columns=[]; PrimaryKey={Name=""; Columns=[]}; Indexes=[]; Uniques=[]; Relationships=[] }
+let assertEqual (expected) (actual) =
+    try
+        Assert.AreEqual(box expected, box actual)
+    with | :? AssertionException ->
+        System.Console.WriteLine((sprintf "EXPECTED:\n%A\nACTUAL:\n%A" expected actual))
+        reraise()
+    
+let assertSqlEqual (expected: string) (actual: string) =
+    let normalise (str: string) = str
+    try
+        Assert.AreEqual(normalise expected, normalise actual)
+    with | :? AssertionException ->
+        System.Console.WriteLine((sprintf "EXPECTED:\n%s\nACTUAL:\n%s" expected actual))
+        reraise()
 
-/// The expected schema after processing the sample model
-let expectedSampleModelXmi2_1 = [
+/// An empty table to use as a template
+let tbl = { Table.Name = ""; Columns=[]; PrimaryKey={Name=Auto(PrefixedTableNameColNames); Columns=[]}; Indexes=[]; Uniques=[]; Relationships=[] }
+
+/// The expected schema after processing the sample models.
+/// This must be kept exactly in sync with the EA model.
+let expectedSampleModel = [
     { tbl with Name = "person"
                Columns = [col "person_id" IntAuto; col "first_nme" (VarChar 100); col "last_nme" (VarChar 100)]
-               PrimaryKey = pk "PK_Person" ["person_id"]
-               Indexes = [ix "ix_person_first" ["first_nme"]; ix "ix_person_last" ["last_nme"]; ix "ix_person_first_last" ["first_nme"; "last_nme"]] }
+               PrimaryKey = pkn "PK_Person" ["person_id"]
+               Indexes = [ixn "ix_person_first" ["first_nme"]; ixn "ix_person_last" ["last_nme"]; ixn "ix_person_first_last" ["first_nme"; "last_nme"]] }
     { tbl with Name = "person_salary"
                Columns = [col "person_salary_id" IntAuto; col "person_id" Int
-                          {(col "salary_amt" (Decimal(10, 2))) with AllowsNull = true}
-                          {(col "contract_pdf" (SQLT "varbinary(max)")) with AllowsNull = true}]
-               PrimaryKey = pk "PK_person_salary" ["person_salary_id"]
-               Indexes = [ix "IXFK_person_salary_person" ["person_id"]]
-               Relationships = [rel "FK_person_salary_person" ["person_id"] (target "person" ["person_id"])]
-               Uniques = [uq "UQ_person_salary_person_id" ["person_id"; "salary_amt"]] }
+                          {(col "salary_amt" (Decimal(10, 2))) with Nullable = true}
+                          {(col "contract_pdf" (SQLT "varbinary(max)")) with Nullable = true}]
+               PrimaryKey = pkn "PK_person_salary" ["person_salary_id"]
+               Indexes = [ixn "IXFK_person_salary_person" ["person_id"]]
+               Relationships = [reln "FK_person_salary_person" ["person_id"] (target "person" ["person_id"])]
+               Uniques = [uqn "UQ_person_salary_person_id" ["person_id"; "salary_amt"]] }
     { tbl with Name = "person_skill"
                Columns = [col "person_skill_id" IntAuto; col "person_id" Int; col "skill_type_id" Int]
-               PrimaryKey = pk "PK_person_skill" ["person_skill_id"]
-               Indexes = [ix "IXFK_person_skill_person" ["person_id"]; ix "IXFK_person_skill_ref_skill_type" ["skill_type_id"]]
-               Relationships = [rel "FK_person_skill_ref_skill_type" ["skill_type_id"] (target "ref_skill_type" ["skill_type_id"])
-                                rel "FK_person_skill_person" ["person_id"] (target "person" ["person_id"])] }
+               PrimaryKey = pkn "PK_person_skill" ["person_skill_id"]
+               Indexes = [ixn "IXFK_person_skill_person" ["person_id"]; ixn "IXFK_person_skill_ref_skill_type" ["skill_type_id"]]
+               Relationships = [reln "FK_person_skill_ref_skill_type" ["skill_type_id"] (target "ref_skill_type" ["skill_type_id"])
+                                reln "FK_person_skill_person" ["person_id"] (target "person" ["person_id"])] }
     { tbl with Name = "person_tag"
                Columns = [col "person_id" Int; col "tag_type_id" Int]
-               PrimaryKey = pk "PK_person_tag" ["person_id";"tag_type_id"]
-               Indexes = [ix "IXFK_person_tag_person" ["person_id"]; ix "IXFK_person_tag_tag_type" ["tag_type_id"]]
-               Relationships = [rel "FK_person_tag_tag_type" ["tag_type_id"] (target "tag_type" ["tag_type_id"])
-                                rel "FK_person_tag_person" ["person_id"] (target "person" ["person_id"]) ] }
+               PrimaryKey = pkn "PK_person_tag" ["person_id";"tag_type_id"]
+               Indexes = [ixn "IXFK_person_tag_person" ["person_id"]; ixn "IXFK_person_tag_tag_type" ["tag_type_id"]]
+               Relationships = [reln "FK_person_tag_tag_type" ["tag_type_id"] (target "tag_type" ["tag_type_id"])
+                                reln "FK_person_tag_person" ["person_id"] (target "person" ["person_id"]) ] }
     { tbl with Name = "ref_skill_type"
                Columns = [col "skill_type_id" IntAuto; col "skill_type_nme" (VarChar 100)]
-               PrimaryKey = pk "PK_ref_skill_type" ["skill_type_id"]
-               Uniques = [uq "UQ_ref_skill_type_skill_type_nme" ["skill_type_nme"]] }
+               PrimaryKey = pkn "PK_ref_skill_type" ["skill_type_id"]
+               Uniques = [uqn "UQ_ref_skill_type_skill_type_nme" ["skill_type_nme"]] }
     { tbl with Name = "tag_type"
                Columns = [col "tag_type_id" IntAuto; col "tag_type_nme" (VarChar 100)]
-               PrimaryKey = pk "PK_tag_type" ["tag_type_id"]
-               Uniques = [uq "UQ_tag_type_tag_type_nme" ["tag_type_nme"]] }
+               PrimaryKey = pkn "PK_tag_type" ["tag_type_id"]
+               Uniques = [uqn "UQ_tag_type_tag_type_nme" ["tag_type_nme"]] }
 ]
+
+[<Test>]
+let ``generate auto-named objects correctly`` () =
+    let antable = { Table.Name = "t1"
+                    Columns = [col "c1" IntAuto; col "c2" (NVarChar(100)); ]
+                    PrimaryKey = pk ["c1"]
+                    Indexes = [ix ["c1"]; ix ["c1";"c2"]]
+                    Uniques = [uq ["c1"]]
+                    Relationships = [rel ["c1"] (target "t2" ["t2c1"])] }
+
+    let generatedSql = System.String.Join("\r\n", (generateSqlFromModel [antable]) |> Seq.toArray)
+    let expectedSql = "CREATE TABLE [t1] (c1 int NOT NULL IDENTITY(1,1), c2 nvarchar(100) NOT NULL
+    CONSTRAINT [pk_t1_c1] PRIMARY KEY CLUSTERED (c1))
+  CREATE INDEX [ix_t1_c1] ON [t1] (c1)
+CREATE INDEX [ix_t1_c1_c2] ON [t1] (c1, c2)
+ALTER TABLE [t1] ADD CONSTRAINT [fk_t1_t2] FOREIGN KEY (c1) REFERENCES [t2] (t2c1)"
+  
+    assertSqlEqual expectedSql generatedSql
 
 [<Test>]
 let ``generate the correct model from samples`` () =
     let sampleXmlFile = @"SampleModel_xmi2_1.xml"
     use xml = new System.IO.StreamReader(sampleXmlFile)
     let actual = readTablesFromXmi (xml) |> Seq.toList
-    Assert.AreEqual((sprintf "%A" expectedSampleModelXmi2_1), (sprintf "%A" actual))
-
+    assertEqual expectedSampleModel actual
     (* Verify by using the SQL - produces a more easily readable output
     let expectedSql = Seq.toList (generateSqlFromModel expectedSampleModelXmi2_1)
     let actualSql = Seq.toList (generateSqlFromModel actual)
@@ -57,41 +90,33 @@ let ``generate the correct model from samples`` () =
     *)
 
 [<Test>]
-let ``generate the correct SQL from samples`` () =
+let ``generate the correct SQL using the named objects`` () =
     let actualSqlStatements =
         generateSqlFromModel
-            [ { Table.Name = "t1"; Columns = [{ ColumnDef.Name = "id"; DataType = Int; AllowsNull = false; } ]
-                PrimaryKey = { Name="t1_pk"; Columns = ["id"] }
-                Indexes = [ { Name="t1_ix"; Columns = ["id"] } ]
-                Uniques = [ { Name="t1_uq"; Columns = ["id"] } ]
-                Relationships = [
-                                { Relationship.Name = "r1"; SourceCols = ["id"]; Target = { Name="t2"; Columns=["??"] } }
-                                { Relationship.Name = "r2"; SourceCols = ["anysrccol?"]; Target = { Name="anytarget?"; Columns=["??";"yep"] } }
-                                ] }
-              { Table.Name = "t2"; Columns = [ { ColumnDef.Name = "whatever1"; DataType = (NVarChar 999); AllowsNull = true; }
-                                               { ColumnDef.Name = "whatever2"; DataType = (Decimal(99, 99)); AllowsNull = true; }
-                                             ]
-                PrimaryKey = { Name="pkt2"; Columns = ["whatever1";"whatever2"] }
-                Indexes = [ { Name="ixt2"; Columns = ["whatever1";"whatever2"] } ]
-                Uniques = [ { Name="uqt2"; Columns = ["whatever1";"whatever2"] } ]
-                Relationships = [
-                                { Relationship.Name = "t2r1"; SourceCols = ["id"]; Target = { Name="t2"; Columns=["??"] } }
-                                { Relationship.Name = "t2r2"; SourceCols = ["anysrccol?"]; Target = { Name="anytarget?"; Columns=["??";"yep"] } }
-                                ] }
-            ]
+            [ { Table.Name = "t1"; Columns = [col "id" Int]; PrimaryKey = pkn "t1_pk" ["id"]; 
+                Indexes = [ ixn "t1_ix" ["id"] ]; Uniques = [ uqn "t1_uq" ["id"] ]
+                Relationships = [ reln "r1" ["id"] (target "t2" ["??"])
+                                  reln "r2" ["anysrccol?"] (target "anytarget?" ["??";"yep"]) ]}
+              { Table.Name = "t2"; Columns = [ { (col "whatever1" (NVarChar 999)) with Nullable = true; }
+                                               { (col "whatever2" (Decimal(99, 99))) with Nullable = true; }]
+                PrimaryKey = pkn "pkt2" ["whatever1";"whatever2"]
+                Indexes = [ ixn "ixt2" ["whatever1";"whatever2"] ]
+                Uniques = [ uqn "uqt2" ["whatever1";"whatever2"] ]
+                Relationships = [ reln "t2r1" ["id"] (target "t2" ["??"])
+                                  reln "t2r2" ["anysrccol?"] (target "anytarget?" ["??";"yep"]) ]} ]
         |> Seq.toList
 
-    // For now, each (table+indexes) is a single string, each set of FKs (per table) is a single string
     let expectedSqlStatements = [
-        // Expect two strings as output for now
+        // For now, each (table+indexes) is a single string, each set of FKs (per table) is a single string
         "CREATE TABLE [t1] (id int NOT NULL
-  CONSTRAINT [t1_pk] PRIMARY KEY CLUSTERED (id))
+    CONSTRAINT [t1_pk] PRIMARY KEY CLUSTERED (id))
   CREATE INDEX [t1_ix] ON [t1] (id)"
 
         "CREATE TABLE [t2] (whatever1 nvarchar(999) NULL, whatever2 decimal(99, 99) NULL
-  CONSTRAINT [pkt2] PRIMARY KEY CLUSTERED (whatever1, whatever2))
+    CONSTRAINT [pkt2] PRIMARY KEY CLUSTERED (whatever1, whatever2))
   CREATE INDEX [ixt2] ON [t2] (whatever1, whatever2)"
         
+        // note we put fk constraints at the end so tables are created before they're referenced
         "ALTER TABLE [t1] ADD CONSTRAINT [r1] FOREIGN KEY (id) REFERENCES [t2] (??)
 ALTER TABLE [t1] ADD CONSTRAINT [r2] FOREIGN KEY (anysrccol?) REFERENCES [anytarget?] (??, yep)"
 

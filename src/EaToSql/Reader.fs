@@ -51,7 +51,7 @@ let createParamGetterForDoc (doc : EaUml.Xmi) : OwnedOpNamedColumnsRefGetter =
         |> dict
     fun (op: EaUml.Operation) ->
         let ownedOp = getOrFail "failed to find ownedOperation/columns for table operation %s" ownedOpsById op.Idref
-        { NamedColumnRefs.Name = ownedOp.Name
+        { NamedColumnRefs.Name = Named(ownedOp.Name)
           Columns = ownedOp.OwnedParameters
                     |> Seq.map (fun oop -> oop.Name)
                     |> Seq.cast<ColumnRef>
@@ -68,7 +68,7 @@ let attrToColumnDef (a: EaUml.Attribute) : ColumnDef =
                                          decimalScale = a.Coords.Scale, decimalPrec = a.Properties.Precision)
 
     { ColumnDef.Name = a.Name
-      AllowsNull = (a.Properties.Duplicates = (Some false))
+      Nullable = (a.Properties.Duplicates = (Some false))
       DataType = createDataType }
 
 /// Extracts table operations that have a given sterotype
@@ -79,6 +79,15 @@ let tableOpsForStereotype stereotype projection (e: EaUml.Element) =
         o.Operations
         |> Seq.filter (fun o -> o.Stereotype.Stereotype = stereotype)
         |> Seq.map projection
+
+let pkForElement (oopGetter: OwnedOpNamedColumnsRefGetter) (elem: EaUml.Element) : PrimaryKey =
+    tableOpsForStereotype "PK" (fun op -> oopGetter op) elem |> Seq.exactlyOne
+
+let indexesForElement (oopGetter: OwnedOpNamedColumnsRefGetter) (elem: EaUml.Element) : Index list =
+    tableOpsForStereotype "index" oopGetter elem |> Seq.toList
+
+let uniquesForElement (oopGetter: OwnedOpNamedColumnsRefGetter) (elem: EaUml.Element) : Unique list =
+    tableOpsForStereotype "unique" oopGetter elem |> Seq.toList
 
 /// Turns a table association into a Relationship
 let asocToRelationship  (oopGetter: OwnedOpNamedColumnsRefGetter)
@@ -95,17 +104,18 @@ let asocToRelationship  (oopGetter: OwnedOpNamedColumnsRefGetter)
     let targetName = targetOwnedAttr.Name
     let targetOwnedOp = asocPkgElems.End.OwnedOperations |> Seq.find (fun oop -> oop.Name = targetName)
 
-    { Relationship.Name = fkName
+    { Relationship.Name = Named(fkName)
       SourceCols = (oopGetter sourceOperation).Columns
-      Target = { NamedColumnRefs.Name = asocPkgElems.End.Name
-                 Columns = (targetOwnedOp.OwnedParameters |> Seq.map (fun op -> op.Name) |> Seq.toList) } }
+      Target = { TableName = asocPkgElems.End.Name
+                 Columns = (targetOwnedOp.OwnedParameters |> Seq.map (fun op -> op.Name) |> Seq.toList) }
+    }
 
 let classElementToTable linkAsocGetter oopGetter (e: EaUml.Element) : Table =
     { Table.Name = e.Name.Value
       Columns = (e.Attributes.Value.Attributes |> Array.map attrToColumnDef |> Seq.toList)
-      PrimaryKey = (tableOpsForStereotype "PK" oopGetter e) |> Seq.exactlyOne
-      Indexes = (tableOpsForStereotype "index" oopGetter e) |> Seq.toList
-      Uniques = (tableOpsForStereotype "unique" oopGetter e) |> Seq.toList
+      PrimaryKey = pkForElement oopGetter e
+      Indexes = (indexesForElement oopGetter e) |> Seq.toList
+      Uniques = (uniquesForElement oopGetter e) |> Seq.toList
       Relationships = if e.Links.IsNone then []
                       else e.Links.Value.Associations
                             |> Seq.filter (fun a -> a.Start = e.Idref.Value)

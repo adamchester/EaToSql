@@ -14,7 +14,7 @@ let stringJoin separator (strings: string seq) = System.String.Join(separator, s
 let csv (strings:string seq) = stringJoin ", " strings
 
 /// Joins a sequence of strings using new line characters.
-let joinNewLines strings = stringJoin "\n" strings
+let joinNewLines strings = stringJoin "\r\n" strings
 
 /// Group a sequence by a custom projection, then take a number from each group,
 /// then flatten the results into a new sequence.
