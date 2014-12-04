@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>SqlGen - EaToSql</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="adamchester@gmail.com"/>
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet"/>
+
+    <link type="text/css" rel="stylesheet" href="/EaToSql/content/style.css" />
+    <script type="text/javascript" src="/EaToSql/content/tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://github.com/adamchester/EaToSql">github page</a></li>
+        </ul>
+        <h3 class="muted"><a href="/EaToSql/index.html">EaToSql</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+
+
+
+<h1>SqlGen</h1>
+<div class="xmldoc">
+</div>
+
+<!-- Render nested types and modules, if there are any -->
+
+  <h3>Functions and values</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Function or value</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '13', 13)" onmouseover="showTip(event, '13', 13)">
+            calculatePrefixedTableNameColNames (...)
+          </code>
+          <div class="tip" id="13">
+            <strong>Signature:</strong> prefix:string -&gt; ownerName:string -&gt; cols:seq&lt;string&gt; -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L22-22" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '14', 14)" onmouseover="showTip(event, '14', 14)">
+            columnRefsCsv columns
+          </code>
+          <div class="tip" id="14">
+            <strong>Signature:</strong> columns:ColumnRef list -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L5-5" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '15', 15)" onmouseover="showTip(event, '15', 15)">
+            columnsDefsToCsv columns
+          </code>
+          <div class="tip" id="15">
+            <strong>Signature:</strong> columns:ColumnDef list -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L39-39" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '16', 16)" onmouseover="showTip(event, '16', 16)">
+            dataTypeToSql dataType allowsNull
+          </code>
+          <div class="tip" id="16">
+            <strong>Signature:</strong> dataType:DataType -&gt; allowsNull:bool -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L7-7" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '17', 17)" onmouseover="showTip(event, '17', 17)">
+            getCreateFkSql t rel
+          </code>
+          <div class="tip" id="17">
+            <strong>Signature:</strong> t:Table -&gt; rel:Relationship -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L57-57" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '18', 18)" onmouseover="showTip(event, '18', 18)">
+            getCreateFksSql t
+          </code>
+          <div class="tip" id="18">
+            <strong>Signature:</strong> t:Table -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L61-61" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '19', 19)" onmouseover="showTip(event, '19', 19)">
+            getCreateTableAndIdxSql t
+          </code>
+          <div class="tip" id="19">
+            <strong>Signature:</strong> t:Table -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L47-47" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '20', 20)" onmouseover="showTip(event, '20', 20)">
+            getCreateTableIdxSql t index
+          </code>
+          <div class="tip" id="20">
+            <strong>Signature:</strong> t:Table -&gt; index:Index -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L44-44" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '21', 21)" onmouseover="showTip(event, '21', 21)">
+            getIndexColumns owner index
+          </code>
+          <div class="tip" id="21">
+            <strong>Signature:</strong> owner:Table -&gt; index:Index -&gt; ColumnRef list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L35-35" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '22', 22)" onmouseover="showTip(event, '22', 22)">
+            getIndexName owner index
+          </code>
+          <div class="tip" id="22">
+            <strong>Signature:</strong> owner:Table -&gt; index:Index -&gt; ModelName<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L34-34" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '23', 23)" onmouseover="showTip(event, '23', 23)">
+            getPkeyColumns owner pk
+          </code>
+          <div class="tip" id="23">
+            <strong>Signature:</strong> owner:Table -&gt; pk:PrimaryKey -&gt; ColumnRef list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L29-29" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '24', 24)" onmouseover="showTip(event, '24', 24)">
+            getPkeyName owner pk
+          </code>
+          <div class="tip" id="24">
+            <strong>Signature:</strong> owner:Table -&gt; pk:PrimaryKey -&gt; ModelName<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L28-28" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '25', 25)" onmouseover="showTip(event, '25', 25)">
+            getRelName owner rel
+          </code>
+          <div class="tip" id="25">
+            <strong>Signature:</strong> owner:Table -&gt; rel:Relationship -&gt; ModelName<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L30-30" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '26', 26)" onmouseover="showTip(event, '26', 26)">
+            getRelSrcColumns owner rel
+          </code>
+          <div class="tip" id="26">
+            <strong>Signature:</strong> owner:Table -&gt; rel:Relationship -&gt; ColumnRef list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L32-32" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '27', 27)" onmouseover="showTip(event, '27', 27)">
+            getRelTargetName owner rel
+          </code>
+          <div class="tip" id="27">
+            <strong>Signature:</strong> owner:Table -&gt; rel:Relationship -&gt; ModelName<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L31-31" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '28', 28)" onmouseover="showTip(event, '28', 28)">
+            getRelTgtColumns owner rel
+          </code>
+          <div class="tip" id="28">
+            <strong>Signature:</strong> owner:Table -&gt; rel:Relationship -&gt; ColumnRef list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L33-33" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '29', 29)" onmouseover="showTip(event, '29', 29)">
+            getUniqueColumns owner unique
+          </code>
+          <div class="tip" id="29">
+            <strong>Signature:</strong> owner:Table -&gt; unique:Unique -&gt; ColumnRef list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L37-37" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '30', 30)" onmouseover="showTip(event, '30', 30)">
+            getUniqueName owner unique
+          </code>
+          <div class="tip" id="30">
+            <strong>Signature:</strong> owner:Table -&gt; unique:Unique -&gt; ModelName<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L36-36" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '31', 31)" onmouseover="showTip(event, '31', 31)">
+            resolveAutoStrategy (...)
+          </code>
+          <div class="tip" id="31">
+            <strong>Signature:</strong> owner:Table -&gt; prefix:string -&gt; nameOrStrategy:ModelNameOrAutoStrategy -&gt; others:string list -&gt; ModelName<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/SqlGen.fs#L23-23" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+        </div>
+        <div class="span3">
+          <img src="/EaToSql/img/logo.png" alt="F# Project" style="width:150px;margin:10px" />  
+          <ul class="nav nav-list" id="menu" style="margin-top: 20px;">
+            <li class="nav-header">EaToSql</li>
+            <li><a href="/EaToSql/index.html">Home page</a></li>
+            <li class="divider"></li>
+            <li><a href="http://nuget.org/packages/EaToSql">Get Library via NuGet</a></li>
+            <li><a href="http://github.com/adamchester/EaToSql">Source Code on GitHub</a></li>
+            <li><a href="/EaToSql/license.html">License</a></li>
+            <li><a href="/EaToSql/release-notes.html">Release Notes</a></li>
+            
+            <li class="nav-header">Getting started</li>
+            <li><a href="/EaToSql/tutorial.html">Sample tutorial</a></li>
+
+            <li class="nav-header">Documentation</li>
+            <li><a href="/EaToSql/reference/index.html">API Reference</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <a href="http://github.com/adamchester/EaToSql"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"/></a>
+  </body>
+  </html>

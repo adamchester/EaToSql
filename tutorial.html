@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>EA to SQL
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Converts EA XMI to SQL."/>
+    <meta name="author" content="adamchester@gmail.com"/>
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet"/>
+
+    <link type="text/css" rel="stylesheet" href="/EaToSql/content/style.css" />
+    <script type="text/javascript" src="/EaToSql/content/tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://github.com/adamchester/EaToSql">github page</a></li>
+        </ul>
+        <h3 class="muted"><a href="/EaToSql/index.html">EaToSql</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+<h1>EA to SQL</h1>
+
+<p>This utility converts an Enterprise Architect (EA) XMI data model export
+into a SQL create script for SQL Server.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+<span class="l">20: </span>
+<span class="l">21: </span>
+<span class="l">22: </span>
+<span class="l">23: </span>
+<span class="l">24: </span>
+<span class="l">25: </span>
+<span class="l">26: </span>
+<span class="l">27: </span>
+<span class="l">28: </span>
+<span class="l">29: </span>
+<span class="l">30: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="prep">#r</span> <span class="s">&quot;</span><span class="s">EaToSql</span><span class="s">.</span><span class="s">dll</span><span class="s">&quot;</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">EaToSql</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 2)" onmouseover="showTip(event, 'fs1', 2)" class="i">EaToSql</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="i">Dsl</span>
+
+<span class="c">// Define a model</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 4)" onmouseover="showTip(event, 'fs3', 4)" class="i">tables</span> <span class="o">=</span> [
+    { <span class="i">Name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">person</span><span class="s">&quot;</span>
+      <span class="i">Columns</span> <span class="o">=</span> [ <span onmouseout="hideTip(event, 'fs4', 5)" onmouseover="showTip(event, 'fs4', 5)" class="i">col</span> <span class="s">&quot;</span><span class="s">id</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs5', 6)" onmouseover="showTip(event, 'fs5', 6)" class="i">IntAuto</span>; <span onmouseout="hideTip(event, 'fs4', 7)" onmouseover="showTip(event, 'fs4', 7)" class="i">col</span> <span class="s">&quot;</span><span class="s">first</span><span class="s">&quot;</span> (<span onmouseout="hideTip(event, 'fs6', 8)" onmouseover="showTip(event, 'fs6', 8)" class="i">NVarChar</span>(<span class="n">100</span>)); <span onmouseout="hideTip(event, 'fs4', 9)" onmouseover="showTip(event, 'fs4', 9)" class="i">col</span> <span class="s">&quot;</span><span class="s">last</span><span class="s">&quot;</span> (<span onmouseout="hideTip(event, 'fs6', 10)" onmouseover="showTip(event, 'fs6', 10)" class="i">NVarChar</span>(<span class="n">100</span>)) ]
+      <span onmouseout="hideTip(event, 'fs7', 11)" onmouseover="showTip(event, 'fs7', 11)" class="i">PrimaryKey</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs8', 12)" onmouseover="showTip(event, 'fs8', 12)" class="i">pk</span> [<span class="s">&quot;</span><span class="s">id</span><span class="s">&quot;</span>]
+      <span class="i">Indexes</span> <span class="o">=</span> [ <span onmouseout="hideTip(event, 'fs9', 13)" onmouseover="showTip(event, 'fs9', 13)" class="i">ix</span> [<span class="s">&quot;</span><span class="s">first</span><span class="s">&quot;</span>]; <span onmouseout="hideTip(event, 'fs9', 14)" onmouseover="showTip(event, 'fs9', 14)" class="i">ix</span> [<span class="s">&quot;</span><span class="s">last</span><span class="s">&quot;</span>]; <span onmouseout="hideTip(event, 'fs9', 15)" onmouseover="showTip(event, 'fs9', 15)" class="i">ix</span> [<span class="s">&quot;</span><span class="s">first</span><span class="s">&quot;</span>;<span class="s">&quot;</span><span class="s">last</span><span class="s">&quot;</span>] ]
+      <span class="i">Uniques</span> <span class="o">=</span> []; <span class="i">Relationships</span> <span class="o">=</span> []; }
+    { <span class="i">Name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">ref_tag</span><span class="s">&quot;</span>
+      <span class="i">Columns</span> <span class="o">=</span> [ <span onmouseout="hideTip(event, 'fs4', 16)" onmouseover="showTip(event, 'fs4', 16)" class="i">col</span> <span class="s">&quot;</span><span class="s">id</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs5', 17)" onmouseover="showTip(event, 'fs5', 17)" class="i">IntAuto</span>; <span onmouseout="hideTip(event, 'fs4', 18)" onmouseover="showTip(event, 'fs4', 18)" class="i">col</span> <span class="s">&quot;</span><span class="s">tag_nme</span><span class="s">&quot;</span> (<span onmouseout="hideTip(event, 'fs6', 19)" onmouseover="showTip(event, 'fs6', 19)" class="i">NVarChar</span>(<span class="n">100</span>)); ]
+      <span onmouseout="hideTip(event, 'fs7', 20)" onmouseover="showTip(event, 'fs7', 20)" class="i">PrimaryKey</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs8', 21)" onmouseover="showTip(event, 'fs8', 21)" class="i">pk</span> [ <span class="s">&quot;</span><span class="s">id</span><span class="s">&quot;</span> ]
+      <span class="i">Indexes</span> <span class="o">=</span> [ <span onmouseout="hideTip(event, 'fs9', 22)" onmouseover="showTip(event, 'fs9', 22)" class="i">ix</span> [<span class="s">&quot;</span><span class="s">first</span><span class="s">&quot;</span>]; <span onmouseout="hideTip(event, 'fs9', 23)" onmouseover="showTip(event, 'fs9', 23)" class="i">ix</span> [<span class="s">&quot;</span><span class="s">last</span><span class="s">&quot;</span>]; <span onmouseout="hideTip(event, 'fs9', 24)" onmouseover="showTip(event, 'fs9', 24)" class="i">ix</span> [<span class="s">&quot;</span><span class="s">first</span><span class="s">&quot;</span>; <span class="s">&quot;</span><span class="s">last</span><span class="s">&quot;</span>]; ]
+      <span class="i">Uniques</span> <span class="o">=</span> [ <span onmouseout="hideTip(event, 'fs10', 25)" onmouseover="showTip(event, 'fs10', 25)" class="i">uq</span> [<span class="s">&quot;</span><span class="s">tag_nme</span><span class="s">&quot;</span>] ]
+      <span class="i">Relationships</span> <span class="o">=</span> [] }
+    { <span class="i">Name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">person_tag</span><span class="s">&quot;</span>
+      <span class="i">Columns</span> <span class="o">=</span> [ <span onmouseout="hideTip(event, 'fs4', 26)" onmouseover="showTip(event, 'fs4', 26)" class="i">col</span> <span class="s">&quot;</span><span class="s">person_id</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs11', 27)" onmouseover="showTip(event, 'fs11', 27)" class="i">Int</span>; <span onmouseout="hideTip(event, 'fs4', 28)" onmouseover="showTip(event, 'fs4', 28)" class="i">col</span> <span class="s">&quot;</span><span class="s">tag_id</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs11', 29)" onmouseover="showTip(event, 'fs11', 29)" class="i">Int</span> ]
+      <span onmouseout="hideTip(event, 'fs7', 30)" onmouseover="showTip(event, 'fs7', 30)" class="i">PrimaryKey</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs8', 31)" onmouseover="showTip(event, 'fs8', 31)" class="i">pk</span> [<span class="s">&quot;</span><span class="s">person_id</span><span class="s">&quot;</span>;<span class="s">&quot;</span><span class="s">tag_id</span><span class="s">&quot;</span>]
+      <span class="i">Indexes</span> <span class="o">=</span> [ <span onmouseout="hideTip(event, 'fs9', 32)" onmouseover="showTip(event, 'fs9', 32)" class="i">ix</span> [<span class="s">&quot;</span><span class="s">person_id</span><span class="s">&quot;</span>] ]
+      <span class="i">Uniques</span> <span class="o">=</span> [ <span onmouseout="hideTip(event, 'fs10', 33)" onmouseover="showTip(event, 'fs10', 33)" class="i">uq</span> [<span class="s">&quot;</span><span class="s">person_id</span><span class="s">&quot;</span>;<span class="s">&quot;</span><span class="s">tag_id</span><span class="s">&quot;</span>] ]
+      <span class="i">Relationships</span> <span class="o">=</span> [ <span onmouseout="hideTip(event, 'fs12', 34)" onmouseover="showTip(event, 'fs12', 34)" class="i">rel</span> [<span class="s">&quot;</span><span class="s">person_id</span><span class="s">&quot;</span>] (<span onmouseout="hideTip(event, 'fs13', 35)" onmouseover="showTip(event, 'fs13', 35)" class="i">target</span> <span class="s">&quot;</span><span class="s">person</span><span class="s">&quot;</span> [<span class="s">&quot;</span><span class="s">person_id</span><span class="s">&quot;</span>]) ]}
+]
+
+<span class="c">// Generate the SQL create statements</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 36)" onmouseover="showTip(event, 'fs14', 36)" class="i">sql</span> <span class="o">=</span>
+    <span onmouseout="hideTip(event, 'fs15', 37)" onmouseover="showTip(event, 'fs15', 37)" class="i">generateSqlFromModel</span> <span onmouseout="hideTip(event, 'fs3', 38)" onmouseover="showTip(event, 'fs3', 38)" class="i">tables</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs16', 39)" onmouseover="showTip(event, 'fs16', 39)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs17', 40)" onmouseover="showTip(event, 'fs17', 40)" class="i">toArray</span>
+    <span class="o">|&gt;</span> (<span class="k">fun</span> <span onmouseout="hideTip(event, 'fs18', 41)" onmouseover="showTip(event, 'fs18', 41)" class="i">strs</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs19', 42)" onmouseover="showTip(event, 'fs19', 42)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs20', 43)" onmouseover="showTip(event, 'fs20', 43)" class="i">String</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs21', 44)" onmouseover="showTip(event, 'fs21', 44)" class="i">Join</span>(<span class="s">&quot;</span><span class="s">\r</span><span class="s">\n</span><span class="s">&quot;</span>, <span onmouseout="hideTip(event, 'fs18', 45)" onmouseover="showTip(event, 'fs18', 45)" class="i">strs</span>))</pre>
+</td>
+</tr>
+</table>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">val</span> <span class="i">it</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs22', 46)" onmouseover="showTip(event, 'fs22', 46)" class="i">string</span> <span class="o">=</span>
+  <span class="s">&quot;</span><span class="s">CREATE</span><span class="s"> </span><span class="s">TABLE</span><span class="s"> </span><span class="s">[</span><span class="s">person</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">id</span><span class="s"> </span><span class="s">int</span><span class="s"> </span><span class="s">NOT</span><span class="s"> </span><span class="s">NULL</span><span class="s"> </span><span class="s">IDENTITY</span><span class="s">(</span><span class="s">1</span><span class="s">,</span><span class="s">1</span><span class="s">)</span><span class="s">,</span><span class="s"> </span><span class="s">first</span><span class="s"> </span><span class="s">nvarchar</span><span class="s">(</span><span class="s">100</span><span class="s">)</span><span class="s"> </span><span class="s">NOT</span><span class="s"> </span><span class="s">NULL</span><span class="s">,</span><span class="s"> </span><span class="s">last</span><span class="s"> </span><span class="s">nvarchar</span><span class="s">(</span><span class="s">100</span><span class="s">)</span><span class="s"> </span><span class="s">NOT</span><span class="s"> </span><span class="s">NULL</span>
+<span class="s">    </span><span class="s">CONSTRAINT</span><span class="s"> </span><span class="s">[</span><span class="s">pk_person_id</span><span class="s">]</span><span class="s"> </span><span class="s">PRIMARY</span><span class="s"> </span><span class="s">KEY</span><span class="s"> </span><span class="s">CLUSTERED</span><span class="s"> </span><span class="s">(</span><span class="s">id</span><span class="s">)</span><span class="s">)</span>
+<span class="s">  </span><span class="s">CREATE</span><span class="s"> </span><span class="s">INDEX</span><span class="s"> </span><span class="s">[</span><span class="s">ix_person_first</span><span class="s">]</span><span class="s"> </span><span class="s">ON</span><span class="s"> </span><span class="s">[</span><span class="s">person</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">first</span><span class="s">)</span>
+<span class="s">CREATE</span><span class="s"> </span><span class="s">INDEX</span><span class="s"> </span><span class="s">[</span><span class="s">ix_person_last</span><span class="s">]</span><span class="s"> </span><span class="s">ON</span><span class="s"> </span><span class="s">[</span><span class="s">person</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">last</span><span class="s">)</span>
+<span class="s">CREATE</span><span class="s"> </span><span class="s">INDEX</span><span class="s"> </span><span class="s">[</span><span class="s">ix_person_first_last</span><span class="s">]</span><span class="s"> </span><span class="s">ON</span><span class="s"> </span><span class="s">[</span><span class="s">person</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">first</span><span class="s">,</span><span class="s"> </span><span class="s">last</span><span class="s">)</span>
+<span class="s">CREATE</span><span class="s"> </span><span class="s">TABLE</span><span class="s"> </span><span class="s">[</span><span class="s">ref_tag</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">id</span><span class="s"> </span><span class="s">int</span><span class="s"> </span><span class="s">NOT</span><span class="s"> </span><span class="s">NULL</span><span class="s"> </span><span class="s">IDENTITY</span><span class="s">(</span><span class="s">1</span><span class="s">,</span><span class="s">1</span><span class="s">)</span><span class="s">,</span><span class="s"> </span><span class="s">tag_nme</span><span class="s"> </span><span class="s">nvarchar</span><span class="s">(</span><span class="s">100</span><span class="s">)</span><span class="s"> </span><span class="s">NOT</span><span class="s"> </span><span class="s">NULL</span>
+<span class="s">    </span><span class="s">CONSTRAINT</span><span class="s"> </span><span class="s">[</span><span class="s">pk_ref_tag_id</span><span class="s">]</span><span class="s"> </span><span class="s">PRIMARY</span><span class="s"> </span><span class="s">KEY</span><span class="s"> </span><span class="s">CLUSTERED</span><span class="s"> </span><span class="s">(</span><span class="s">id</span><span class="s">)</span><span class="s">)</span>
+<span class="s">  </span><span class="s">CREATE</span><span class="s"> </span><span class="s">INDEX</span><span class="s"> </span><span class="s">[</span><span class="s">ix_ref_tag_first</span><span class="s">]</span><span class="s"> </span><span class="s">ON</span><span class="s"> </span><span class="s">[</span><span class="s">ref_tag</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">first</span><span class="s">)</span>
+<span class="s">CREATE</span><span class="s"> </span><span class="s">INDEX</span><span class="s"> </span><span class="s">[</span><span class="s">ix_ref_tag_last</span><span class="s">]</span><span class="s"> </span><span class="s">ON</span><span class="s"> </span><span class="s">[</span><span class="s">ref_tag</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">last</span><span class="s">)</span>
+<span class="s">CREATE</span><span class="s"> </span><span class="s">INDEX</span><span class="s"> </span><span class="s">[</span><span class="s">ix_ref_tag_first_last</span><span class="s">]</span><span class="s"> </span><span class="s">ON</span><span class="s"> </span><span class="s">[</span><span class="s">ref_tag</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">first</span><span class="s">,</span><span class="s"> </span><span class="s">last</span><span class="s">)</span>
+<span class="s">CREATE</span><span class="s"> </span><span class="s">TABLE</span><span class="s"> </span><span class="s">[</span><span class="s">person_tag</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">person_id</span><span class="s"> </span><span class="s">int</span><span class="s"> </span><span class="s">NOT</span><span class="s"> </span><span class="s">NULL</span><span class="s">,</span><span class="s"> </span><span class="s">tag_id</span><span class="s"> </span><span class="s">int</span><span class="s"> </span><span class="s">NOT</span><span class="s"> </span><span class="s">NULL</span>
+<span class="s">    </span><span class="s">CONSTRAINT</span><span class="s"> </span><span class="s">[</span><span class="s">pk_person_tag_person_id_tag_id</span><span class="s">]</span><span class="s"> </span><span class="s">PRIMARY</span><span class="s"> </span><span class="s">KEY</span><span class="s"> </span><span class="s">CLUSTERED</span><span class="s"> </span><span class="s">(</span><span class="s">person_id</span><span class="s">,</span><span class="s"> </span><span class="s">tag_id</span><span class="s">)</span><span class="s">)</span>
+<span class="s">  </span><span class="s">CREATE</span><span class="s"> </span><span class="s">INDEX</span><span class="s"> </span><span class="s">[</span><span class="s">ix_person_tag_person_id</span><span class="s">]</span><span class="s"> </span><span class="s">ON</span><span class="s"> </span><span class="s">[</span><span class="s">person_tag</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">person_id</span><span class="s">)</span>
+
+
+<span class="s">ALTER</span><span class="s"> </span><span class="s">TABLE</span><span class="s"> </span><span class="s">[</span><span class="s">person_tag</span><span class="s">]</span><span class="s"> </span><span class="s">ADD</span><span class="s"> </span><span class="s">CONSTRAINT</span><span class="s"> </span><span class="s">[</span><span class="s">fk_person_tag_person</span><span class="s">]</span><span class="s"> </span><span class="s">FOREIGN</span><span class="s"> </span><span class="s">KEY</span><span class="s"> </span><span class="s">(</span><span class="s">person_id</span><span class="s">)</span><span class="s"> </span><span class="s">REFERENCES</span><span class="s"> </span><span class="s">[</span><span class="s">person</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">person_id</span><span class="s">)</span><span class="s">&quot;</span></pre>
+</td>
+</tr>
+</table>
+
+<p>Some more info</p>
+
+<div class="tip" id="fs1">namespace EaToSql</div>
+<div class="tip" id="fs2">module Dsl<br /><br />from EaToSql</div>
+<div class="tip" id="fs3">val tables : Table list<br /><br />Full name: Tutorial.tables</div>
+<div class="tip" id="fs4">val col : name:ModelName -&gt; dtype:DataType -&gt; ColumnDef<br /><br />Full name: EaToSql.Dsl.col</div>
+<div class="tip" id="fs5">union case DataType.IntAuto: DataType</div>
+<div class="tip" id="fs6">union case DataType.NVarChar: length: int -&gt; DataType</div>
+<div class="tip" id="fs7">type PrimaryKey = NamedColumnRefs<br /><br />Full name: EaToSql.Model.PrimaryKey</div>
+<div class="tip" id="fs8">val pk : cols:ColumnRef list -&gt; PrimaryKey<br /><br />Full name: EaToSql.Dsl.pk</div>
+<div class="tip" id="fs9">val ix : cols:ColumnRef list -&gt; Index<br /><br />Full name: EaToSql.Dsl.ix</div>
+<div class="tip" id="fs10">val uq : cols:ColumnRef list -&gt; Unique<br /><br />Full name: EaToSql.Dsl.uq</div>
+<div class="tip" id="fs11">union case DataType.Int: DataType</div>
+<div class="tip" id="fs12">val rel : srcCols:ColumnRef list -&gt; target:RelTarget -&gt; Relationship<br /><br />Full name: EaToSql.Dsl.rel</div>
+<div class="tip" id="fs13">val target : tname:ModelName -&gt; cols:ColumnRef list -&gt; RelTarget<br /><br />Full name: EaToSql.Dsl.target</div>
+<div class="tip" id="fs14">val sql : string<br /><br />Full name: Tutorial.sql</div>
+<div class="tip" id="fs15">val generateSqlFromModel : (seq&lt;Table&gt; -&gt; seq&lt;string&gt;)<br /><br />Full name: EaToSql.Api.generateSqlFromModel</div>
+<div class="tip" id="fs16">module Seq<br /><br />from Microsoft.FSharp.Collections</div>
+<div class="tip" id="fs17">val toArray : source:seq&lt;&#39;T&gt; -&gt; &#39;T []<br /><br />Full name: Microsoft.FSharp.Collections.Seq.toArray</div>
+<div class="tip" id="fs18">val strs : string []</div>
+<div class="tip" id="fs19">namespace System</div>
+<div class="tip" id="fs20">Multiple items<br />type String =<br />&#160;&#160;new : value:char -&gt; string + 7 overloads<br />&#160;&#160;member Chars : int -&gt; char<br />&#160;&#160;member Clone : unit -&gt; obj<br />&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;member Contains : value:string -&gt; bool<br />&#160;&#160;member CopyTo : sourceIndex:int * destination:char[] * destinationIndex:int * count:int -&gt; unit<br />&#160;&#160;member EndsWith : value:string -&gt; bool + 2 overloads<br />&#160;&#160;member Equals : obj:obj -&gt; bool + 2 overloads<br />&#160;&#160;member GetEnumerator : unit -&gt; CharEnumerator<br />&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;...<br /><br />Full name: System.String<br /><br />--------------------<br />System.String(value: nativeptr&lt;char&gt;) : unit<br />System.String(value: nativeptr&lt;sbyte&gt;) : unit<br />System.String(value: char []) : unit<br />System.String(c: char, count: int) : unit<br />System.String(value: nativeptr&lt;char&gt;, startIndex: int, length: int) : unit<br />System.String(value: nativeptr&lt;sbyte&gt;, startIndex: int, length: int) : unit<br />System.String(value: char [], startIndex: int, length: int) : unit<br />System.String(value: nativeptr&lt;sbyte&gt;, startIndex: int, length: int, enc: System.Text.Encoding) : unit</div>
+<div class="tip" id="fs21">System.String.Join(separator: string, values: System.Collections.Generic.IEnumerable&lt;string&gt;) : string<br />System.String.Join&lt;&#39;T&gt;(separator: string, values: System.Collections.Generic.IEnumerable&lt;&#39;T&gt;) : string<br />System.String.Join(separator: string, params values: obj []) : string<br />System.String.Join(separator: string, params value: string []) : string<br />System.String.Join(separator: string, value: string [], startIndex: int, count: int) : string</div>
+<div class="tip" id="fs22">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
+
+        </div>
+        <div class="span3">
+          <img src="/EaToSql/img/logo.png" alt="F# Project" style="width:150px;margin:10px" />  
+          <ul class="nav nav-list" id="menu" style="margin-top: 20px;">
+            <li class="nav-header">EaToSql</li>
+            <li><a href="/EaToSql/index.html">Home page</a></li>
+            <li class="divider"></li>
+            <li><a href="http://nuget.org/packages/EaToSql">Get Library via NuGet</a></li>
+            <li><a href="http://github.com/adamchester/EaToSql">Source Code on GitHub</a></li>
+            <li><a href="/EaToSql/license.html">License</a></li>
+            <li><a href="/EaToSql/release-notes.html">Release Notes</a></li>
+            
+            <li class="nav-header">Getting started</li>
+            <li><a href="/EaToSql/tutorial.html">Sample tutorial</a></li>
+
+            <li class="nav-header">Documentation</li>
+            <li><a href="/EaToSql/reference/index.html">API Reference</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <a href="http://github.com/adamchester/EaToSql"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"/></a>
+  </body>
+  </html>
