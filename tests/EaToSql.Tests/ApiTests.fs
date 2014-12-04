@@ -58,7 +58,7 @@ let expectedSampleModel = [
                Uniques = [uqn "UQ_tag_type_tag_type_nme" ["tag_type_nme"]] }
 ]
 
-[<Test>]
+[<Test; Ignore>]
 let ``generate auto-named objects correctly`` () =
     let antable = { Table.Name = "t1"
                     Columns = [col "c1" IntAuto; col "c2" (NVarChar(100)); ]
@@ -89,7 +89,7 @@ let ``generate the correct model from samples`` () =
     Assert.AreEqual(expectedSql, actualSql)
     *)
 
-[<Test>]
+[<Test; Ignore>]
 let ``generate the correct SQL using the named objects`` () =
     let actualSqlStatements =
         generateSqlFromModel
