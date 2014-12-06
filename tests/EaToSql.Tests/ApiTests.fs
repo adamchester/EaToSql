@@ -3,21 +3,6 @@
 open EaToSql
 open NUnit.Framework
 
-let assertEqual (expected) (actual) =
-    try
-        Assert.AreEqual(box expected, box actual)
-    with | :? AssertionException ->
-        System.Console.WriteLine((sprintf "EXPECTED:\n%A\nACTUAL:\n%A" expected actual))
-        reraise()
-    
-let assertSqlEqual (expected: string) (actual: string) =
-    let normalise (str: string) = str
-    try
-        Assert.AreEqual(normalise expected, normalise actual)
-    with | :? AssertionException ->
-        System.Console.WriteLine((sprintf "EXPECTED:\n%s\nACTUAL:\n%s" expected actual))
-        reraise()
-
 /// An empty table to use as a template
 let tbl = { Table.Name = ""; Columns=[]; PrimaryKey={Name=Auto(PrefixedTableNameColNames); Columns=[]}; Indexes=[]; Uniques=[]; Relationships=[] }
 
@@ -60,28 +45,29 @@ let expectedSampleModel = [
 
 [<Test; Ignore>]
 let ``generate auto-named objects correctly`` () =
-    let antable = { Table.Name = "t1"
-                    Columns = [col "c1" IntAuto; col "c2" (NVarChar(100)); ]
-                    PrimaryKey = pk ["c1"]
-                    Indexes = [ix ["c1"]; ix ["c1";"c2"]]
-                    Uniques = [uq ["c1"]]
-                    Relationships = [rel ["c1"] (target "t2" ["t2c1"])] }
+    let table = { Table.Name = "t1"
+                  Columns = [col "c1" IntAuto; col "c2" (NVarChar(100)); ]
+                  PrimaryKey = pk ["c1"]
+                  Indexes = [ix ["c1"]; ix ["c1";"c2"]]
+                  Uniques = [uq ["c1"]]
+                  Relationships = [rel ["c1"] (target "t2" ["t2c1"])] }
 
-    let generatedSql = System.String.Join("\r\n", (generateSqlFromModel [antable]) |> Seq.toArray)
-    let expectedSql = "CREATE TABLE [t1] (c1 int NOT NULL IDENTITY(1,1), c2 nvarchar(100) NOT NULL
-    CONSTRAINT [pk_t1_c1] PRIMARY KEY CLUSTERED (c1))
-  CREATE INDEX [ix_t1_c1] ON [t1] (c1)
-CREATE INDEX [ix_t1_c1_c2] ON [t1] (c1, c2)
-ALTER TABLE [t1] ADD CONSTRAINT [fk_t1_t2] FOREIGN KEY (c1) REFERENCES [t2] (t2c1)"
-  
-    assertSqlEqual expectedSql generatedSql
+    let generatedSql = (generateSqlFromModel [table]) |> Seq.toArray
+    let expectedSql =
+        [| "CREATE TABLE [t1] (c1 int NOT NULL IDENTITY(1,1), c2 nvarchar(100) NOT NULL"
+           "CONSTRAINT [pk_t1_c1] PRIMARY KEY CLUSTERED (c1))"
+           "CREATE INDEX [ix_t1_c1] ON [t1] (c1)"
+           "CREATE INDEX [ix_t1_c1_c2] ON [t1] (c1, c2)"
+           "ALTER TABLE [t1] ADD CONSTRAINT [fk_t1_t2] FOREIGN KEY (c1) REFERENCES [t2] (t2c1)" |]
+
+    CollectionAssert.AreEqual(expectedSql, generatedSql)
 
 [<Test>]
 let ``generate the correct model from samples`` () =
     let sampleXmlFile = @"SampleModel_xmi2_1.xml"
     use xml = new System.IO.StreamReader(sampleXmlFile)
     let actual = readTablesFromXmi (xml) |> Seq.toList
-    assertEqual expectedSampleModel actual
+    Assert.AreEqual(expectedSampleModel, actual)
     (* Verify by using the SQL - produces a more easily readable output
     let expectedSql = Seq.toList (generateSqlFromModel expectedSampleModelXmi2_1)
     let actualSql = Seq.toList (generateSqlFromModel actual)
@@ -104,25 +90,20 @@ let ``generate the correct SQL using the named objects`` () =
                 Uniques = [ uqn "uqt2" ["whatever1";"whatever2"] ]
                 Relationships = [ reln "t2r1" ["id"] (target "t2" ["??"])
                                   reln "t2r2" ["anysrccol?"] (target "anytarget?" ["??";"yep"]) ]} ]
-        |> Seq.toList
+        |> Seq.toArray
 
-    let expectedSqlStatements = [
-        // For now, each (table+indexes) is a single string, each set of FKs (per table) is a single string
-        "CREATE TABLE [t1] (id int NOT NULL
-    CONSTRAINT [t1_pk] PRIMARY KEY CLUSTERED (id))
-  CREATE INDEX [t1_ix] ON [t1] (id)"
+    let expectedSqlStatements =
+        [| "CREATE TABLE [t1] (id int NOT NULL"
+           "CONSTRAINT [t1_pk] PRIMARY KEY CLUSTERED (id))"
+           "CREATE INDEX [t1_ix] ON [t1] (id)"
+           "CREATE TABLE [t2] (whatever1 nvarchar(999) NULL, whatever2 decimal(99, 99) NULL"
+           "CONSTRAINT [pkt2] PRIMARY KEY CLUSTERED (whatever1, whatever2))"
+           "CREATE INDEX [ixt2] ON [t2] (whatever1, whatever2)"
+           // note we put fk constraints at the end so tables are created before they're referenced
+           "ALTER TABLE [t1] ADD CONSTRAINT [r1] FOREIGN KEY (id) REFERENCES [t2] (??)"
+           "ALTER TABLE [t1] ADD CONSTRAINT [r2] FOREIGN KEY (anysrccol?) REFERENCES [anytarget?] (??, yep)"
+           "ALTER TABLE [t2] ADD CONSTRAINT [t2r1] FOREIGN KEY (id) REFERENCES [t2] (??)"
+           "ALTER TABLE [t2] ADD CONSTRAINT [t2r2] FOREIGN KEY (anysrccol?) REFERENCES [anytarget?] (??, yep)" |]
 
-        "CREATE TABLE [t2] (whatever1 nvarchar(999) NULL, whatever2 decimal(99, 99) NULL
-    CONSTRAINT [pkt2] PRIMARY KEY CLUSTERED (whatever1, whatever2))
-  CREATE INDEX [ixt2] ON [t2] (whatever1, whatever2)"
-        
-        // note we put fk constraints at the end so tables are created before they're referenced
-        "ALTER TABLE [t1] ADD CONSTRAINT [r1] FOREIGN KEY (id) REFERENCES [t2] (??)
-ALTER TABLE [t1] ADD CONSTRAINT [r2] FOREIGN KEY (anysrccol?) REFERENCES [anytarget?] (??, yep)"
-
-        "ALTER TABLE [t2] ADD CONSTRAINT [t2r1] FOREIGN KEY (id) REFERENCES [t2] (??)
-ALTER TABLE [t2] ADD CONSTRAINT [t2r2] FOREIGN KEY (anysrccol?) REFERENCES [anytarget?] (??, yep)"
-    ]
-
-    Assert.AreEqual(expectedSqlStatements, actualSqlStatements)
+    CollectionAssert.AreEqual(expectedSqlStatements, actualSqlStatements)
             
