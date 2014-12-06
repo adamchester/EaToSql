@@ -43,7 +43,7 @@ let expectedSampleModel = [
                Uniques = [uqn "UQ_tag_type_tag_type_nme" ["tag_type_nme"]] }
 ]
 
-[<Test; Ignore>]
+[<Test>]
 let ``generate auto-named objects correctly`` () =
     let table = { Table.Name = "t1"
                   Columns = [col "c1" IntAuto; col "c2" (NVarChar(100)); ]
@@ -67,15 +67,15 @@ let ``generate the correct model from samples`` () =
     let sampleXmlFile = @"SampleModel_xmi2_1.xml"
     use xml = new System.IO.StreamReader(sampleXmlFile)
     let actual = readTablesFromXmi (xml) |> Seq.toList
-    Assert.AreEqual(expectedSampleModel, actual)
-    (* Verify by using the SQL - produces a more easily readable output
-    let expectedSql = Seq.toList (generateSqlFromModel expectedSampleModelXmi2_1)
+    let expectedSql = (generateSqlFromModel expectedSampleModel) |> Seq.toList
     let actualSql = Seq.toList (generateSqlFromModel actual)
     printfn "EXPECTED: %A\nACTUAL: %A" expectedSql actualSql
     Assert.AreEqual(expectedSql, actualSql)
+    Assert.AreEqual(expectedSampleModel, actual)
+    (* Verify by using the SQL - produces a more easily readable output
     *)
 
-[<Test; Ignore>]
+[<Test>]
 let ``generate the correct SQL using the named objects`` () =
     let actualSqlStatements =
         generateSqlFromModel

@@ -27,21 +27,35 @@ This example demonstrates using a function defined in this sample library.
 #r "EaToSql.dll"
 open EaToSql
 
-let generatedSql =
-    generateSqlFromModel
-        [ { Table.Name = "t1"
-            Columns = [ { ColumnDef.Name = "id"; DataType = Int; Nullable = false; } ]
-            PrimaryKey = { Name=Named("t1_pk"); Columns = ["id"] }
-            Indexes = [ { Name=Named("t1_ix"); Columns = ["id"] } ]
-            Uniques = []; Relationships = [] }
-        ]
-    |> Seq.toArray
+let model = 
+    [ table "t1" [ col "id" IntAuto ]
+      { table "t2" [ col "t2id" IntAuto ]
+            with Indexes = [ ix [ "id" ] ]
+                 Relationships = [ rel ["id"] (target "t1" ["id"]) ]}
+      { table "t3" [ col "first" (NVarChar 100)
+                     col "last" (NVarChar 100) ] with Indexes = 
+                                                          [ ix [ "first" ]
+                                                            ix [ "last" ]
+                                                            ix [ "first"; "last" ] ] } ]
 
-let expectedCreateTableSql =
-    [| "CREATE TABLE [t1] (id int NOT NULL"
-       "CONSTRAINT [t1_pk] PRIMARY KEY CLUSTERED (id))"
-       "CREATE INDEX [t1_ix] ON [t1] (id)" |]
+model |> generateSqlFromModel |> Seq.toArray
 
+(**
+The output is:
+    val it : string [] =
+      [|"CREATE TABLE [t1] (id int NOT NULL IDENTITY(1,1)";
+        "CONSTRAINT [pk_t1_id] PRIMARY KEY CLUSTERED (id))";
+        "CREATE TABLE [t2] (t2id int NOT NULL IDENTITY(1,1)";
+        "CONSTRAINT [pk_t2_t2id] PRIMARY KEY CLUSTERED (t2id))";
+        "CREATE INDEX [ix_t2_id] ON [t2] (id)";
+        "CREATE TABLE [t3] (first nvarchar(100) NOT NULL, last nvarchar(100) NOT NULL";
+        "CONSTRAINT [pk_t3_first] PRIMARY KEY CLUSTERED (first))";
+        "CREATE INDEX [ix_t3_first] ON [t3] (first)";
+        "CREATE INDEX [ix_t3_last] ON [t3] (last)";
+        "CREATE INDEX [ix_t3_first_last] ON [t3] (first, last)";
+        "ALTER TABLE [t2] ADD CONSTRAINT [fk_t2_t1] FOREIGN KEY (id) REFERENCES [t1] (id)"|]
+
+*)
 
 (**
 Samples & documentation

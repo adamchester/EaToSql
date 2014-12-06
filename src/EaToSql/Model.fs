@@ -115,3 +115,12 @@ module Dsl =
     let reln name srcCols target : Relationship = { Name=Named(name); SourceCols = srcCols; Target = target }
     /// Creates a new RelTarget; the target table/columns of a relationship.
     let target tname cols : RelTarget = { TableName = tname; Columns = cols; }
+
+    /// Creates a table with a name and columns. By default, the primary key is
+    /// the first column and no indexes, uniques, or relationships are defined.
+    let table name cols =
+        { Table.Name = name
+          Columns = cols
+          PrimaryKey = pk [cols.Head.Name]
+          Indexes=[]; Uniques=[]; Relationships=[];
+        }
