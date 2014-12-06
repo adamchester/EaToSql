@@ -1,5 +1,6 @@
 namespace EaToSql
 
+/// Describes a relational data model: Tables, Columns, Indexes, Relationships, etc.
 [<AutoOpen>]
 module Model =
     let inline internal printObjectStructure x = sprintf "%A" x
@@ -37,11 +38,13 @@ module Model =
                 | "nvarchar" -> NVarChar(length.Value)
                 | _ -> SQLT(lowerName)
 
+    /// Describes the available strategies for auto-naming objects
     type AutoNameStrategy =
         /// [prefix]_[table_name]_[first_col]... e.g. ix_table_name_first_col_second_col
         | PrefixedTableNameColNames
         with override x.ToString() = printObjectStructure x
 
+    /// Describes either a direct (Named) object or an auto naming strategy
     type ModelNameOrAutoStrategy =
         | Named of ModelName
         | Auto of AutoNameStrategy
@@ -50,9 +53,14 @@ module Model =
     /// A named object that references one or more column names (e.g. a named table index or named PKey).
     type NamedColumnRefs = { Name: ModelNameOrAutoStrategy; Columns: ColumnRef list }
         with override x.ToString() = printObjectStructure x
-    
+
+    /// Describes the primary key of a table.
     type PrimaryKey = NamedColumnRefs
+
+    /// Describes an index of a table; a name and columns.
     type Index = NamedColumnRefs
+
+    /// Describes a unique constraint of a table; a name and columns.
     type Unique = NamedColumnRefs
     
     /// The target table name and column(s) of a table relationship.
@@ -80,21 +88,30 @@ module Model =
         Uniques: Unique list }
         with override x.ToString() = printObjectStructure x
 
+/// Provides a slightly more succinct syntax for creating Model objects.
 [<AutoOpen>]
 module Dsl =
+    /// Creates a ColumnDef record in a more succinct way.
     let col name dtype : ColumnDef = { Name = name; DataType = dtype; Nullable = false; }
     
     // AutoNamed
     let private auto = Auto(PrefixedTableNameColNames)
-    let pk cols : PrimaryKey = { PrimaryKey.Name=auto; Columns=cols }
-    let ix cols : Index = { Index.Name=auto; Columns=cols }
-    let uq cols : Unique = { Unique.Name=auto; Columns=cols }
-    let rel srcCols target : Relationship = { Relationship.Name=auto; SourceCols=srcCols; Target=target }
+    /// creates a primary key with auto-naming, and the specified columns.
+    let pk cols : PrimaryKey = { Name=auto; Columns=cols }
+    /// creates an index with auto-naming, and the specified columns.
+    let ix cols : Index = { Name=auto; Columns=cols }
+    /// creates a unique constraint with auto-naming, and the specified columns.
+    let uq cols : Unique = { Name=auto; Columns=cols }
+    /// creates a relationship with auto-naming, and the specified source columns, and target table/columns.
+    let rel srcCols target : Relationship = { Name=auto; SourceCols=srcCols; Target=target }
 
-    // Named
+    /// Creates a named primary key.
     let pkn name cols : PrimaryKey = { Name=Named(name); Columns = cols }
+    /// Creates a named index.
     let ixn name cols : Index = { Name=Named(name); Columns = cols }
+    /// Creates a named unique constraint.
     let uqn name cols : Unique = { Name=Named(name); Columns = cols }
+    /// Creates a named relationship, with source columns and a target table/columns.
     let reln name srcCols target : Relationship = { Name=Named(name); SourceCols = srcCols; Target = target }
-
+    /// Creates a new RelTarget; the target table/columns of a relationship.
     let target tname cols : RelTarget = { TableName = tname; Columns = cols; }

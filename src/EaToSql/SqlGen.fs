@@ -1,4 +1,4 @@
-﻿module EaToSql.SqlGen
+﻿module internal EaToSql.SqlGen
 
 open EaToSql
 
@@ -41,28 +41,27 @@ let columnsDefsToCsv (columns: ColumnDef list) =
         |> Seq.map (fun c -> sprintf "%s %s" c.Name (dataTypeToSql c.DataType c.Nullable))
         |> Seq.toArray)
 
-let getCreateTableIdxSql (t: Table) (index: Index) =
+let getCreateIndexSql (t: Table) (index: Index) =
     sprintf "CREATE INDEX [%s] ON [%s] (%s)" (getIndexName t index) t.Name (columnRefsCsv (getIndexColumns t index))
 
-let getCreateTableAndIdxSql (t:Table) =
-    let createIdxSqlLines =
-        t.Indexes |> List.filter (fun idx -> (getIndexColumns t idx).Length > 0) |> List.map (getCreateTableIdxSql t) |> Seq.toArray
-
-    let createIdxSql = joinNewLines createIdxSqlLines
-    sprintf "CREATE TABLE [%s] (%s
-    CONSTRAINT [%s] PRIMARY KEY CLUSTERED (%s))
-  %s"
-            t.Name (columnsDefsToCsv t.Columns) (getPkeyName t t.PrimaryKey) (columnRefsCsv (getPkeyColumns t t.PrimaryKey)) createIdxSql
+let getCreateTableAndIdxSql (t:Table) : string seq = seq {
+         yield (sprintf "CREATE TABLE [%s] (%s" t.Name (columnsDefsToCsv t.Columns))
+         yield (sprintf "CONSTRAINT [%s] PRIMARY KEY CLUSTERED (%s))" (getPkeyName t t.PrimaryKey) (columnRefsCsv (getPkeyColumns t t.PrimaryKey)))
+         yield! (t.Indexes
+                |> Seq.filter (fun idx -> (getIndexColumns t idx).Length > 0)
+                |> Seq.map (getCreateIndexSql t))
+     }
 
 let getCreateFkSql (t: Table) (rel: Relationship) =
     sprintf "ALTER TABLE [%s] ADD CONSTRAINT [%s] FOREIGN KEY (%s) REFERENCES [%s] (%s)"
-            (t.Name) (getRelName t rel) (columnRefsCsv (getRelSrcColumns t rel)) (getRelTargetName t rel) (columnRefsCsv (getRelTgtColumns t rel))
+            (t.Name) (getRelName t rel)
+            (columnRefsCsv (getRelSrcColumns t rel))
+            (getRelTargetName t rel)
+            (columnRefsCsv (getRelTgtColumns t rel))
 
-let getCreateFksSql (t: Table) =
-    t.Relationships
-    |> groupByTakeFlatten (fun rel -> (getRelName t rel)) 1 // TODO: why dups?! for now, only take the first of each relationship name
-    |> Seq.map (getCreateFkSql t)
-    |> Seq.toArray
-    |> joinNewLines
-
+let getCreateFksSql (t: Table) = seq {
+    yield! t.Relationships
+        |> groupByTakeFlatten (fun rel -> (getRelName t rel)) 1 // TODO: why dups?! for now, only take the first of each relationship name
+        |> Seq.map (getCreateFkSql t)
+    }
 

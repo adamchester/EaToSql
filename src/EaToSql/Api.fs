@@ -5,9 +5,9 @@ module EaToSql.Api
 /// described by the UML model.
 let readTablesFromXmi reader = Reader.getDocForXmi(reader) |> Reader.getTablesForDoc
 
-/// Takes the UML XMI 2.1 XML as input and generates the SQL statements
-/// necessary to create the database.
-let generateSqlFromModel tables = seq {
-    yield! tables |> Seq.map SqlGen.getCreateTableAndIdxSql
-    yield! tables |> Seq.map SqlGen.getCreateFksSql
+/// Takes the sequence of tables as input and generates the SQL statements
+/// necessary to create the database containing those tables.
+let generateSqlFromModel tables : string seq = seq {
+    yield! tables |> Seq.collect SqlGen.getCreateTableAndIdxSql
+    yield! tables |> Seq.collect SqlGen.getCreateFksSql
 }
