@@ -30,10 +30,10 @@ open EaToSql
 let generatedSql =
     generateSqlFromModel
         [ { Table.Name = "t1"
-            Columns = [ { ColumnDef.Name = "id"; DataType = Int; AllowsNull = false; } ]
-            PrimaryKey = { Name="t1_pk"; Columns = ["id"] }
-            Indexes = [ { Name="t1_ix"; Columns = ["id"] } ]
-            Relationships = [] }
+            Columns = [ { ColumnDef.Name = "id"; DataType = Int; Nullable = false; } ]
+            PrimaryKey = { Name=Named("t1_pk"); Columns = ["id"] }
+            Indexes = [ { Name=Named("t1_ix"); Columns = ["id"] } ]
+            Uniques = []; Relationships = [] }
         ]
     |> Seq.toArray
 
