@@ -1,3 +1,6 @@
+#### 0.0.5-alpha - December 6 2014
+* Better tutorial, unignore tests, added table helper
+
 #### 0.0.4-alpha - December 6 2014
 * Improved docs
 
