@@ -185,9 +185,29 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '10', 10)" onmouseover="showTip(event, '10', 10)">
-            target tname cols
+            table name cols
           </code>
           <div class="tip" id="10">
+            <strong>Signature:</strong> name:ModelName -&gt; cols:ColumnDef list -&gt; Table<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/adamchester/EaToSql/tree/master/src/EaToSql/Model.fs#L121-121" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Creates a table with a name and columns. By default, the primary key is
+the first column and no indexes, uniques, or relationships are defined.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '11', 11)" onmouseover="showTip(event, '11', 11)">
+            target tname cols
+          </code>
+          <div class="tip" id="11">
             <strong>Signature:</strong> tname:ModelName -&gt; cols:ColumnRef list -&gt; RelTarget<br />
                       </div>
         </td>
@@ -203,10 +223,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '11', 11)" onmouseover="showTip(event, '11', 11)">
+          <code onmouseout="hideTip(event, '12', 12)" onmouseover="showTip(event, '12', 12)">
             uq cols
           </code>
-          <div class="tip" id="11">
+          <div class="tip" id="12">
             <strong>Signature:</strong> cols:ColumnRef list -&gt; Unique<br />
                       </div>
         </td>
@@ -222,10 +242,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '12', 12)" onmouseover="showTip(event, '12', 12)">
+          <code onmouseout="hideTip(event, '13', 13)" onmouseover="showTip(event, '13', 13)">
             uqn name cols
           </code>
-          <div class="tip" id="12">
+          <div class="tip" id="13">
             <strong>Signature:</strong> name:ModelName -&gt; cols:ColumnRef list -&gt; Unique<br />
                       </div>
         </td>
