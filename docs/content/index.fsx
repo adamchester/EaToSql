@@ -37,16 +37,13 @@ let generatedSql =
         ]
     |> Seq.toArray
 
-let expectedCreateTableSql = "CREATE TABLE [t1] (
-	id int NOT NULL
-CONSTRAINT [t1_pk] PRIMARY KEY CLUSTERED (id))
-CREATE INDEX [t1_ix] ON [t1] (id)"
+let expectedCreateTableSql =
+    [| "CREATE TABLE [t1] (id int NOT NULL"
+       "CONSTRAINT [t1_pk] PRIMARY KEY CLUSTERED (id))"
+       "CREATE INDEX [t1_ix] ON [t1] (id)" |]
 
-assert (expectedCreateTableSql = generatedSql.[0])
 
 (**
-Some more info
-
 Samples & documentation
 -----------------------
 
@@ -72,9 +69,9 @@ The library is available under Public Domain license, which allows modification 
 redistribution for both commercial and non-commercial purposes. For more information see the 
 [License file][license] in the GitHub repository. 
 
-  [content]: https://github.com/fsprojects/FSharp.ProjectScaffold/tree/master/docs/content
-  [gh]: https://github.com/fsprojects/FSharp.ProjectScaffold
-  [issues]: https://github.com/fsprojects/FSharp.ProjectScaffold/issues
-  [readme]: https://github.com/fsprojects/FSharp.ProjectScaffold/blob/master/README.md
-  [license]: https://github.com/fsprojects/FSharp.ProjectScaffold/blob/master/LICENSE.txt
+  [content]: https://github.com/adamchester/EaToSql/tree/master/docs/content
+  [gh]: https://github.com/adamchester/EaToSql
+  [issues]: https://github.com/adamchester/EaToSql/issues
+  [readme]: https://github.com/adamchester/EaToSql/blob/master/README.md
+  [license]: https://github.com/adamchester/EaToSql/blob/master/LICENSE.txt
 *)

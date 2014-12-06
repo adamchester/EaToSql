@@ -37,31 +37,24 @@ let tables = [
 ]
 
 // Generate the SQL create statements
-let sql =
-    generateSqlFromModel tables
-    |> Seq.toArray
-    |> (fun strs -> System.String.Join("\r\n", strs))
+let sql = generateSqlFromModel tables |> Seq.toArray
 
 (**
-    val it : string =
-      "CREATE TABLE [person] (id int NOT NULL IDENTITY(1,1), first nvarchar(100) NOT NULL, last nvarchar(100) NOT NULL
-        CONSTRAINT [pk_person_id] PRIMARY KEY CLUSTERED (id))
-      CREATE INDEX [ix_person_first] ON [person] (first)
-    CREATE INDEX [ix_person_last] ON [person] (last)
-    CREATE INDEX [ix_person_first_last] ON [person] (first, last)
-    CREATE TABLE [ref_tag] (id int NOT NULL IDENTITY(1,1), tag_nme nvarchar(100) NOT NULL
-        CONSTRAINT [pk_ref_tag_id] PRIMARY KEY CLUSTERED (id))
-      CREATE INDEX [ix_ref_tag_first] ON [ref_tag] (first)
-    CREATE INDEX [ix_ref_tag_last] ON [ref_tag] (last)
-    CREATE INDEX [ix_ref_tag_first_last] ON [ref_tag] (first, last)
-    CREATE TABLE [person_tag] (person_id int NOT NULL, tag_id int NOT NULL
-        CONSTRAINT [pk_person_tag_person_id_tag_id] PRIMARY KEY CLUSTERED (person_id, tag_id))
-      CREATE INDEX [ix_person_tag_person_id] ON [person_tag] (person_id)
+The output is:
 
-
-    ALTER TABLE [person_tag] ADD CONSTRAINT [fk_person_tag_person] FOREIGN KEY (person_id) REFERENCES [person] (person_id)"
-*)
-
-(**
-Some more info
+    val sql : string [] =
+      [|"CREATE TABLE [person] (id int NOT NULL IDENTITY(1,1), first n"+[50 chars];
+        "CONSTRAINT [pk_person_id] PRIMARY KEY CLUSTERED (id))";
+        "CREATE INDEX [ix_person_first] ON [person] (first)";
+        "CREATE INDEX [ix_person_last] ON [person] (last)";
+        "CREATE INDEX [ix_person_first_last] ON [person] (first, last)";
+        "CREATE TABLE [ref_tag] (id int NOT NULL IDENTITY(1,1), tag_nm"+[24 chars];
+        "CONSTRAINT [pk_ref_tag_id] PRIMARY KEY CLUSTERED (id))";
+        "CREATE INDEX [ix_ref_tag_first] ON [ref_tag] (first)";
+        "CREATE INDEX [ix_ref_tag_last] ON [ref_tag] (last)";
+        "CREATE INDEX [ix_ref_tag_first_last] ON [ref_tag] (first, last)";
+        "CREATE TABLE [person_tag] (person_id int NOT NULL, tag_id int NOT NULL";
+        "CONSTRAINT [pk_person_tag_person_id_tag_id] PRIMARY KEY CLUST"+[25 chars];
+        "CREATE INDEX [ix_person_tag_person_id] ON [person_tag] (person_id)";
+        "ALTER TABLE [person_tag] ADD CONSTRAINT [fk_person_tag_person"+[57 chars]|]
 *)
