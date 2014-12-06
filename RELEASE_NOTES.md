@@ -1,3 +1,6 @@
+#### 0.0.4-alpha - December 6 2014
+* Improved docs
+
 #### 0.0.3-alpha - December 6 2014
 * Improved docs, addressed newlines in output/tests
 
