@@ -89,19 +89,39 @@
 </tr>
 </table>
 
-<p>The output is:
-    val it : string [] =
-      [|"CREATE TABLE [t1] (id int NOT NULL IDENTITY(1,1)";
-        "CONSTRAINT [pk<em>t1</em>id] PRIMARY KEY CLUSTERED (id))";
-        "CREATE TABLE [t2] (t2id int NOT NULL IDENTITY(1,1)";
-        "CONSTRAINT [pk<em>t2</em>t2id] PRIMARY KEY CLUSTERED (t2id))";
-        "CREATE INDEX [ix<em>t2</em>id] ON [t2] (id)";
-        "CREATE TABLE [t3] (first nvarchar(100) NOT NULL, last nvarchar(100) NOT NULL";
-        "CONSTRAINT [pk<em>t3</em>first] PRIMARY KEY CLUSTERED (first))";
-        "CREATE INDEX [ix<em>t3</em>first] ON [t3] (first)";
-        "CREATE INDEX [ix<em>t3</em>last] ON [t3] (last)";
-        "CREATE INDEX [ix<em>t3</em>first_last] ON [t3] (first, last)";
-        "ALTER TABLE [t2] ADD CONSTRAINT [fk<em>t2</em>t1] FOREIGN KEY (id) REFERENCES [t1] (id)"|]</p>
+<p>The output is:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">val</span> <span class="i">it</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs13', 24)" onmouseover="showTip(event, 'fs13', 24)" class="i">string</span> [] <span class="o">=</span>
+  [|<span class="s">&quot;</span><span class="s">CREATE</span><span class="s"> </span><span class="s">TABLE</span><span class="s"> </span><span class="s">[</span><span class="s">t1</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">id</span><span class="s"> </span><span class="s">int</span><span class="s"> </span><span class="s">NOT</span><span class="s"> </span><span class="s">NULL</span><span class="s"> </span><span class="s">IDENTITY</span><span class="s">(</span><span class="s">1</span><span class="s">,</span><span class="s">1</span><span class="s">)</span><span class="s">&quot;</span>;
+    <span class="s">&quot;</span><span class="s">CONSTRAINT</span><span class="s"> </span><span class="s">[</span><span class="s">pk_t1_id</span><span class="s">]</span><span class="s"> </span><span class="s">PRIMARY</span><span class="s"> </span><span class="s">KEY</span><span class="s"> </span><span class="s">CLUSTERED</span><span class="s"> </span><span class="s">(</span><span class="s">id</span><span class="s">)</span><span class="s">)</span><span class="s">&quot;</span>;
+    <span class="s">&quot;</span><span class="s">CREATE</span><span class="s"> </span><span class="s">TABLE</span><span class="s"> </span><span class="s">[</span><span class="s">t2</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">t2id</span><span class="s"> </span><span class="s">int</span><span class="s"> </span><span class="s">NOT</span><span class="s"> </span><span class="s">NULL</span><span class="s"> </span><span class="s">IDENTITY</span><span class="s">(</span><span class="s">1</span><span class="s">,</span><span class="s">1</span><span class="s">)</span><span class="s">&quot;</span>;
+    <span class="s">&quot;</span><span class="s">CONSTRAINT</span><span class="s"> </span><span class="s">[</span><span class="s">pk_t2_t2id</span><span class="s">]</span><span class="s"> </span><span class="s">PRIMARY</span><span class="s"> </span><span class="s">KEY</span><span class="s"> </span><span class="s">CLUSTERED</span><span class="s"> </span><span class="s">(</span><span class="s">t2id</span><span class="s">)</span><span class="s">)</span><span class="s">&quot;</span>;
+    <span class="s">&quot;</span><span class="s">CREATE</span><span class="s"> </span><span class="s">INDEX</span><span class="s"> </span><span class="s">[</span><span class="s">ix_t2_id</span><span class="s">]</span><span class="s"> </span><span class="s">ON</span><span class="s"> </span><span class="s">[</span><span class="s">t2</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">id</span><span class="s">)</span><span class="s">&quot;</span>;
+    <span class="s">&quot;</span><span class="s">CREATE</span><span class="s"> </span><span class="s">TABLE</span><span class="s"> </span><span class="s">[</span><span class="s">t3</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">first</span><span class="s"> </span><span class="s">nvarchar</span><span class="s">(</span><span class="s">100</span><span class="s">)</span><span class="s"> </span><span class="s">NOT</span><span class="s"> </span><span class="s">NULL</span><span class="s">,</span><span class="s"> </span><span class="s">last</span><span class="s"> </span><span class="s">nvarchar</span><span class="s">(</span><span class="s">100</span><span class="s">)</span><span class="s"> </span><span class="s">NOT</span><span class="s"> </span><span class="s">NULL</span><span class="s">&quot;</span>;
+    <span class="s">&quot;</span><span class="s">CONSTRAINT</span><span class="s"> </span><span class="s">[</span><span class="s">pk_t3_first</span><span class="s">]</span><span class="s"> </span><span class="s">PRIMARY</span><span class="s"> </span><span class="s">KEY</span><span class="s"> </span><span class="s">CLUSTERED</span><span class="s"> </span><span class="s">(</span><span class="s">first</span><span class="s">)</span><span class="s">)</span><span class="s">&quot;</span>;
+    <span class="s">&quot;</span><span class="s">CREATE</span><span class="s"> </span><span class="s">INDEX</span><span class="s"> </span><span class="s">[</span><span class="s">ix_t3_first</span><span class="s">]</span><span class="s"> </span><span class="s">ON</span><span class="s"> </span><span class="s">[</span><span class="s">t3</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">first</span><span class="s">)</span><span class="s">&quot;</span>;
+    <span class="s">&quot;</span><span class="s">CREATE</span><span class="s"> </span><span class="s">INDEX</span><span class="s"> </span><span class="s">[</span><span class="s">ix_t3_last</span><span class="s">]</span><span class="s"> </span><span class="s">ON</span><span class="s"> </span><span class="s">[</span><span class="s">t3</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">last</span><span class="s">)</span><span class="s">&quot;</span>;
+    <span class="s">&quot;</span><span class="s">CREATE</span><span class="s"> </span><span class="s">INDEX</span><span class="s"> </span><span class="s">[</span><span class="s">ix_t3_first_last</span><span class="s">]</span><span class="s"> </span><span class="s">ON</span><span class="s"> </span><span class="s">[</span><span class="s">t3</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">first</span><span class="s">,</span><span class="s"> </span><span class="s">last</span><span class="s">)</span><span class="s">&quot;</span>;
+    <span class="s">&quot;</span><span class="s">ALTER</span><span class="s"> </span><span class="s">TABLE</span><span class="s"> </span><span class="s">[</span><span class="s">t2</span><span class="s">]</span><span class="s"> </span><span class="s">ADD</span><span class="s"> </span><span class="s">CONSTRAINT</span><span class="s"> </span><span class="s">[</span><span class="s">fk_t2_t1</span><span class="s">]</span><span class="s"> </span><span class="s">FOREIGN</span><span class="s"> </span><span class="s">KEY</span><span class="s"> </span><span class="s">(</span><span class="s">id</span><span class="s">)</span><span class="s"> </span><span class="s">REFERENCES</span><span class="s"> </span><span class="s">[</span><span class="s">t1</span><span class="s">]</span><span class="s"> </span><span class="s">(</span><span class="s">id</span><span class="s">)</span><span class="s">&quot;</span>|]</pre>
+</td>
+</tr>
+</table>
 
 <h2>Samples &amp; documentation</h2>
 
@@ -139,6 +159,7 @@ redistribution for both commercial and non-commercial purposes. For more informa
 <div class="tip" id="fs10">val generateSqlFromModel : (seq&lt;Table&gt; -&gt; seq&lt;string&gt;)<br /><br />Full name: EaToSql.Api.generateSqlFromModel</div>
 <div class="tip" id="fs11">module Seq<br /><br />from Microsoft.FSharp.Collections</div>
 <div class="tip" id="fs12">val toArray : source:seq&lt;&#39;T&gt; -&gt; &#39;T []<br /><br />Full name: Microsoft.FSharp.Collections.Seq.toArray</div>
+<div class="tip" id="fs13">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
 
         </div>
         <div class="span3">
