@@ -13,18 +13,23 @@ Usage
 *)
 
 (**
-Create a data model in [Enterprise Architect](www.sparxsystems.com.au/products/ea/):
+Create a data model in [Enterprise Architect](http://www.sparxsystems.com.au/products/ea/):
 ![EA Sample Model](img/ea_sample_model.png "A screenshot of Enterprise Architect Data Model diagram")
 
 Export the data model to XMI 2.1:
 
 ![EA XMI 2.1 Export](img/ea_export_xmi21.png "A screenshot of Enterprise Architect Data Model Export XMI 2.1")
-
-Or just define your data model manually:
 *)
-
 #r "EaToSql.dll"
 open EaToSql
+
+// read in the tables from the XMI file
+let binFolder filename = System.IO.Path.Combine(__SOURCE_DIRECTORY__, "../../bin", filename)
+let tablesFromXmi =
+    use reader = new System.IO.StreamReader(binFolder "SampleModel_xmi2_1.xml")
+    readTablesFromXmi reader
+
+(** Or just define your data model manually: *)
 open EaToSql.Dsl
 
 let tables = [
@@ -53,7 +58,9 @@ let tables = [
 (** Finally, generate the SQL create statements: *)
 generateSqlFromModel tables |> Seq.toArray
 
-(** The output is:
+(**
+The output is:
+
     val it : string [] =
       [|"CREATE TABLE [person] (id int NOT NULL IDENTITY(1,1), first nvarchar(100) NOT NULL, last nvarchar(100) NOT NULL";
         "CONSTRAINT [pk_person_id] PRIMARY KEY CLUSTERED (id))";

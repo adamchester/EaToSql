@@ -69,7 +69,7 @@ let ``generate the correct model from samples`` () =
     let actual = readTablesFromXmi (xml) |> Seq.toList
     let expectedSql = (generateSqlFromModel expectedSampleModel) |> Seq.toList
     let actualSql = Seq.toList (generateSqlFromModel actual)
-    printfn "EXPECTED: %A\nACTUAL: %A" expectedSql actualSql
+    // printfn "EXPECTED: %A\nACTUAL: %A" expectedSql actualSql
     Assert.AreEqual(expectedSql, actualSql)
     Assert.AreEqual(expectedSampleModel, actual)
     (* Verify by using the SQL - produces a more easily readable output

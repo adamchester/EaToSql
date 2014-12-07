@@ -42,6 +42,7 @@ model |> generateSqlFromModel |> Seq.toArray
 
 (**
 The output is:
+
     val it : string [] =
       [|"CREATE TABLE [t1] (id int NOT NULL IDENTITY(1,1)";
         "CONSTRAINT [pk_t1_id] PRIMARY KEY CLUSTERED (id))";
