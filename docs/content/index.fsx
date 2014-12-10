@@ -31,12 +31,14 @@ let model =
     [ table "t1" [ col "id" IntAuto ]
       { table "t2" [ col "t2id" IntAuto ]
             with Indexes = [ ix [ "id" ] ]
-                 Relationships = [ rel ["id"] (target "t1" ["id"]) ]}
+                 Relationships = [ rel ["id"] (target "t1" ["id"]) ]
+      }
       { table "t3" [ col "first" (NVarChar 100)
-                     col "last" (NVarChar 100) ] with Indexes = 
-                                                          [ ix [ "first" ]
-                                                            ix [ "last" ]
-                                                            ix [ "first"; "last" ] ] } ]
+                     col "last" (NVarChar 100) ]
+            with Indexes = [ ix [ "first" ]
+                             ix [ "last" ]
+                             ix [ "first"; "last" ] ]
+      }]
 
 model |> generateSqlFromModel |> Seq.toArray
 
@@ -62,8 +64,6 @@ The output is:
 Samples & documentation
 -----------------------
 
-The library comes with comprehensible documentation. 
-It can include tutorials automatically generated from `*.fsx` files in [the content folder][content]. 
 The API reference is automatically generated from Markdown comments in the library implementation.
 
  * [Tutorial](tutorial.html) contains a further explanation of this sample library.

@@ -5,14 +5,14 @@
     <version>@build.number@</version>
     <authors>@authors@</authors>
     <owners>@authors@</owners>
-    <licenseUrl>http://github.com/fsprojects/EaToSql/blob/master/LICENSE.txt</licenseUrl>
-    <projectUrl>http://fsprojects.github.com/EaToSql</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/fsprojects/ProjectScaffold/master/docs/files/img/logo.png</iconUrl>
+    <licenseUrl>http://github.com/adamchester/EaToSql/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>http://adamchester.github.io/EaToSql</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/adamchester/EaToSql/master/docs/files/img/logo.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>@summary@</summary>
     <description>@description@</description>
     <releaseNotes>@releaseNotes@</releaseNotes>
-    <copyright>Copyright 2013</copyright>
+    <copyright>Copyright 2014</copyright>
     <tags>@tags@</tags>
     <dependencies />
   </metadata>

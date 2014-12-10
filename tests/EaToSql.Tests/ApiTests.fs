@@ -67,10 +67,11 @@ let ``generate the correct model from samples`` () =
     let sampleXmlFile = @"SampleModel_xmi2_1.xml"
     use xml = new System.IO.StreamReader(sampleXmlFile)
     let actual = readTablesFromXmi (xml) |> Seq.toList
-    let expectedSql = (generateSqlFromModel expectedSampleModel) |> Seq.toList
-    let actualSql = Seq.toList (generateSqlFromModel actual)
+    // use sql compare for great output
+    // let expectedSql = (generateSqlFromModel expectedSampleModel) |> Seq.toList
+    // let actualSql = Seq.toList (generateSqlFromModel actual)
     // printfn "EXPECTED: %A\nACTUAL: %A" expectedSql actualSql
-    Assert.Equal<string seq>(expectedSql, actualSql)
+    // Assert.Equal<string seq>(expectedSql, actualSql)
     Assert.Equal<Table seq>(expectedSampleModel, actual)
 
 [<Fact>]
