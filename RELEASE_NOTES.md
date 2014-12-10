@@ -1,3 +1,7 @@
+#### 0.0.6-alpha - December 10 2014
+* Fixed nuget package links
+* Minor doc formatting improvement
+
 #### 0.0.5-alpha - December 6 2014
 * Better tutorial, unignore tests, added table helper
 
