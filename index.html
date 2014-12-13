@@ -35,9 +35,11 @@
           
 <h1>EA to SQL</h1>
 
+<p>This utility converts an Enterprise Architect (EA) XMI data model export into a SQL create script for SQL Server.</p>
+
 <h2>Example</h2>
 
-<p>This example demonstrates using a function defined in this sample library.</p>
+<p>Converting a simple data model to SQL, define the tables like this:</p>
 
 <table class="pre"><tr><td class="lines"><pre class="fssnip">
 <span class="l"> 1: </span>
@@ -55,8 +57,6 @@
 <span class="l">13: </span>
 <span class="l">14: </span>
 <span class="l">15: </span>
-<span class="l">16: </span>
-<span class="l">17: </span>
 </pre>
 </td>
 <td class="snippet"><pre class="fssnip">
@@ -74,8 +74,18 @@
             <span class="k">with</span> <span class="i">Indexes</span> <span class="o">=</span> [ <span onmouseout="hideTip(event, 'fs6', 17)" onmouseover="showTip(event, 'fs6', 17)" class="i">ix</span> [ <span class="s">&quot;</span><span class="s">first</span><span class="s">&quot;</span> ]
                              <span onmouseout="hideTip(event, 'fs6', 18)" onmouseover="showTip(event, 'fs6', 18)" class="i">ix</span> [ <span class="s">&quot;</span><span class="s">last</span><span class="s">&quot;</span> ]
                              <span onmouseout="hideTip(event, 'fs6', 19)" onmouseover="showTip(event, 'fs6', 19)" class="i">ix</span> [ <span class="s">&quot;</span><span class="s">first</span><span class="s">&quot;</span>; <span class="s">&quot;</span><span class="s">last</span><span class="s">&quot;</span> ] ]
-      }]
+      }]</pre>
+</td>
+</tr>
+</table>
 
+<p>Next, generate SQL statements like this:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
 <span onmouseout="hideTip(event, 'fs2', 20)" onmouseover="showTip(event, 'fs2', 20)" class="i">model</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs10', 21)" onmouseover="showTip(event, 'fs10', 21)" class="i">generateSqlFromModel</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs11', 22)" onmouseover="showTip(event, 'fs11', 22)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs12', 23)" onmouseover="showTip(event, 'fs12', 23)" class="i">toArray</span></pre>
 </td>
 </tr>
