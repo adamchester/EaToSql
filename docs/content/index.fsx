@@ -7,22 +7,12 @@
 EA to SQL
 =========
 
-Documentation
-
-<div class="row">
-  <div class="span1"></div>
-  <div class="span6">
-    <div class="well well-small" id="nuget">
-      This project has no decent doco.
-    </div>
-  </div>
-  <div class="span1"></div>
-</div>
+This utility converts an Enterprise Architect (EA) XMI data model export into a SQL create script for SQL Server.
 
 Example
 -------
 
-This example demonstrates using a function defined in this sample library.
+Converting a simple data model to SQL, define the tables like this:
 *)
 #r "EaToSql.dll"
 open EaToSql
@@ -39,6 +29,9 @@ let model =
                              ix [ "last" ]
                              ix [ "first"; "last" ] ]
       }]
+(**
+Next, generate SQL statements like this:
+*)
 
 model |> generateSqlFromModel |> Seq.toArray
 
